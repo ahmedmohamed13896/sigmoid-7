@@ -1116,7 +1116,7 @@
                     <tbody>`,
                 dataBody = "";
                 
-                        
+
             $.each(dailyWinners.dailyWinners, function (key, value) {
                 dataBody += `
                         <tr>
@@ -1138,16 +1138,16 @@
         } 
 
         // //////////////
-        function getBestPrice(data){
+        function getBestChange(data){
             let best3 = [];
-            let priceByPattern = [] ;
+            let changeByPattern = [] ;
             $.each(data.dailyWinners, function (key, value) {
-                priceByPattern.push(value.price);
+                changeByPattern.push(value.change);
             });
 
             function findLargest3() {
-                priceByPattern.sort((a, b) => a < b ? 1 : a > b ? -1 : 0);
-                best3 = priceByPattern.slice(0, 3);
+                changeByPattern.sort((a, b) => a < b ? 1 : a > b ? -1 : 0);
+                best3 = changeByPattern.slice(0, 3);
                 return best3;
             }
             console.log(findLargest3());
@@ -1164,7 +1164,7 @@
             getJsonData(data);
 
             // get best 3 cards
-            bestThree = getBestPrice(data);
+            bestThree = getBestChange(data);
             
         });
 
