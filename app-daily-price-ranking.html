@@ -1062,14 +1062,14 @@
 
             // display cards
 
-            function displayCards(cardObject, cardsID, cardNumber) {
+            function displayCards(cardObject, cardsID, cardNumber,className) {
                 let html = `<div class="card-body statistics-body" >
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="company text-center">${cardObject.company[0]}</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center">${cardObject.change[0]}</h2>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[0]}</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${cardObject.volume[0]}</span></div>
                                     <div class="price ">Price: <span>${cardObject.price[0]}</span></div>
@@ -1083,7 +1083,7 @@
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="company text-center">${cardObject.company[1]}</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center">${cardObject.change[1]}</h2>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[1]}</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${cardObject.volume[1]}</span></div>
                                     <div class="price ">Price: <span>${cardObject.price[1]}</span></div>
@@ -1097,7 +1097,7 @@
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="company text-center">${cardObject.company[2]}</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center">${cardObject.change[2]}</h2>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[2]}</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${cardObject.volume[2]}</span></div>
                                     <div class="price ">Price: <span>${cardObject.price[2]}</span></div>
@@ -1258,7 +1258,7 @@
 
                     // get best 3 cards
                     var cardObject = getBestChange(data);
-                    displayCards(cardObject, "#winners_cards", 1)
+                    displayCards(cardObject, "#winners_cards", 1," ")
                     createAllCharts(status);
 
                 });
@@ -1274,7 +1274,7 @@
                     getJsonData(data, "#dailyLosers");
                     // get best 3 cards
                     var cardObject = getBestChange(data);
-                    displayCards(cardObject, "#losers_cards", 4)
+                    displayCards(cardObject, "#losers_cards", 4, "text-danger")
                     createAllCharts(status);
                 });
 
