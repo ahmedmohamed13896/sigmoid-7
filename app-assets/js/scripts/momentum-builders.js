@@ -38,18 +38,22 @@ $(window).on("load", function () {
 
 
     $.each(data.data, function (key, value) {
-      tableBody += `
-                           <tr>`;
+      tableBody += `<tr>`;
       for (let i = 0; i < properties.length; i++) {
         if (i != "exchange" && i != "No" && i != "urls" && i != "MC") {
-            value[properties[i]][0] =='-' ?  tableBody += `<td class="text-danger">${value[properties[i]]}</td>`: tableBody += `<td>${value[properties[i]]}</td>`;
+          if(i == 3){
+            value[properties[i]][0] == "-"
+              ? (tableBody += `<td class="text-danger" style="background-color:yellow;">${value[properties[i]]}</td>`)
+              : (tableBody += `<td style="background-color:yellow;">${ value[properties[i]]}</td>`);
+          }
+          else{
+          value[properties[i]][0] =='-' ?  tableBody += `<td class="text-danger">${value[properties[i]]}</td>`: tableBody += `<td>${value[properties[i]]}</td>`;
+          }
+  
           }
         }
-
-        
        
-      tableBody += `
-                           </tr>`;
+      tableBody += `</tr>`;
     });
 
     tableBody += `</tbody>`;
@@ -69,14 +73,14 @@ $(window).on("load", function () {
       chartDatesValues.push(data.data[0][properties[i]]);
     }
 
-    let sum = chartDatesValues.reduce(function (a, b) {
-      return Number(a) + Number(b);
-    }, 0);     
+    // let sum = chartDatesValues.reduce(function (a, b) {
+    //   return Number(a) + Number(b);
+    // }, 0);     
 
-    for(let x=0; x<chartDatesValues.length; x++){
-      chartDatesValues[x] = ((chartDatesValues[x] * 100) / sum).toFixed(2) ;
-      console.log(chartDatesValues[x] + "%");
-    }
+    // for(let x=0; x<chartDatesValues.length; x++){
+    //   chartDatesValues[x] = ((chartDatesValues[x] * 100) / sum).toFixed(2) ;
+    //   console.log(chartDatesValues[x] + "%");
+    // }
 
     
 
