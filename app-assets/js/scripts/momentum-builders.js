@@ -12,17 +12,12 @@ $(window).on("load", function () {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-
-
-  function getJsonData(data, elementID ,chartID) {
+  function getJsonData(data, elementID) {
     let properties = [];
     let tableBody = "";
-    let chartDates = [];
-    let chartDatesValues = [];
     let dataHTML = `
                     <thead>
                         <tr>`;
-    
 
     // store data properties
     for (let i in data.data[0]) {
@@ -36,23 +31,28 @@ $(window).on("load", function () {
                     </thead>
                     <tbody>`;
 
-
     $.each(data.data, function (key, value) {
       tableBody += `<tr>`;
       for (let i = 0; i < properties.length; i++) {
         if (i != "exchange" && i != "No" && i != "urls" && i != "MC") {
-          if(i == 3){
+          if (i == 3) {
             value[properties[i]][0] == "-"
-              ? (tableBody += `<td class="text-danger" style="background-color:yellow;">${value[properties[i]]}</td>`)
-              : (tableBody += `<td style="background-color:yellow;">${ value[properties[i]]}</td>`);
-          }
-          else{
-          value[properties[i]][0] =='-' ?  tableBody += `<td class="text-danger">${value[properties[i]]}</td>`: tableBody += `<td>${value[properties[i]]}</td>`;
-          }
-  
+              ? (tableBody += `<td class="text-danger" style="background-color:yellow;">${
+                  value[properties[i]]
+                }</td>`)
+              : (tableBody += `<td style="background-color:yellow;">${
+                  value[properties[i]]
+                }</td>`);
+          } else {
+            value[properties[i]][0] == "-"
+              ? (tableBody += `<td class="text-danger">${
+                  value[properties[i]]
+                }</td>`)
+              : (tableBody += `<td>${value[properties[i]]}</td>`);
           }
         }
-       
+      }
+
       tableBody += `</tr>`;
     });
 
@@ -60,150 +60,267 @@ $(window).on("load", function () {
     dataHTML += tableBody;
     $(elementID).append(dataHTML);
 
-
-
-
-    // console.log(properties);
-
-   
-
-    for(let i=1; i<properties.length - 1; i++){
-      chartDates.push(properties[i]);
-      // console.log(data.data[0][properties[i]]);
-      chartDatesValues.push(data.data[0][properties[i]]);
-    }
-
-    // let sum = chartDatesValues.reduce(function (a, b) {
-    //   return Number(a) + Number(b);
-    // }, 0);     
-
-    // for(let x=0; x<chartDatesValues.length; x++){
-    //   chartDatesValues[x] = ((chartDatesValues[x] * 100) / sum).toFixed(2) ;
-    //   console.log(chartDatesValues[x] + "%");
-    // }
-
-    
-
-
-    createBarChart(chartID, chartDates, chartDatesValues);
-
+    return properties;
   }
 
-    function createBarChart(id, chartDates, chartDatesValues) {
-      var barChartEx = $(id),
-        chartWrapper = $(".chartjs");
-      var warningColorShade = "#ffe802",
-        tooltipShadow = "rgba(0, 0, 0, 0.25)",
-        lineChartPrimary = "#666ee8",
-        lineChartDanger = "#ff4961",
-        labelColor = "#6e6b7b",
-        successColorShade = "#28dac6",
-        grid_line_color = "rgba(200, 200, 200, 0.2)"; // RGBA color helps in dark layout
+  // display cards
+
+  function displayCards(data, cardsID, cardNumber, className) {
+    let html = `<div class="card-body statistics-body" >
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
+                        <div class="card card-tiny-line-stats">
+                            <div class="card-body pb-50">
+                                <h6 class="ticker text-center">${
+                                  data[data.length - 1].ticker
+                                }</h6>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
+      data[data.length - 1].volume
+    }</h2>
+                               
+                                <div id="card${cardNumber}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
+                        <div class="card card-tiny-line-stats">
+                            <div class="card-body pb-50">
+                                <h6 class="ticker text-center">${
+                                  data[data.length - 2].ticker
+                                }</h6>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
+      data[data.length - 2].volume
+    }</h2>
+                               
+                                <div id="card${cardNumber + 1}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                        <div class="card card-tiny-line-stats">
+                            <div class="card-body pb-50">
+                                <h6 class="ticker text-center">${
+                                  data[data.length - 3].ticker
+                                }</h6>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
+      data[data.length - 3].volume
+    }</h2>
+                               
+                                <div id="card${cardNumber + 2}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>`;
+
+    $(cardsID).append(html);
+  }
 
 
-      // Wrap charts with div of height according to their data-height
-      if (chartWrapper.length) {
-        chartWrapper.each(function () {
-          $(this).wrap(
-            $(
-              '<div style="height:' +
-                this.getAttribute("data-height") +
-                'px"></div>'
-            )
-          );
-        });
-      }
 
-        if (barChartEx.length) {
-          var barChartExample = new Chart(barChartEx, {
-            type: "bar",
-            options: {
-              elements: {
-                rectangle: {
-                  borderWidth: 2,
-                  borderSkipped: "bottom",
-                },
-              },
-              responsive: true,
-              maintainAspectRatio: false,
-              responsiveAnimationDuration: 500,
-              legend: {
-                display: false,
-              },
-              tooltips: {
-                // Updated default tooltip UI
-                shadowOffsetX: 1,
-                shadowOffsetY: 1,
-                shadowBlur: 8,
-                shadowColor: tooltipShadow,
-                backgroundColor: window.colors.solid.white,
-                titleFontColor: window.colors.solid.black,
-                bodyFontColor: window.colors.solid.black,
-              },
-              scales: {
-                xAxes: [
-                  {
-                    barThickness: 15,
-                    display: true,
-                    gridLines: {
-                      display: true,
-                      color: grid_line_color,
-                      zeroLineColor: grid_line_color,
-                    },
-                    scaleLabel: {
-                      display: false,
-                    },
-                    ticks: {
-                      fontColor: labelColor,
-                    },
-                  },
-                ],
-                yAxes: [
-                  {
-                    display: true,
-                    gridLines: {
-                      color: grid_line_color,
-                      zeroLineColor: grid_line_color,
-                    },
-                    ticks: {
-                      stepSize: 20,
-                      min: id=="#winners_line_chart"? 0: -100,
-                      max: 100,
-                      fontColor: labelColor,
-                      callback: function (label) {
-                        if (label) {
-                          return label + "%";
-                        }
-                      },
-                    },
-                  },
-                ],
-              },
-            },
-            data: {
-              labels: chartDates,
-              datasets: [
-                {
-                  data: chartDatesValues,
-                  backgroundColor: successColorShade,
-                  borderColor: "transparent",
-                },
-              ],
-            },
-          });
-        }
+  
+  function createAllCharts(status, properties, items) {
+    // Charts
+
+    let obj ={
+      0:[],
+      1:[],
+      2:[]
+    };
+    // for (let j = 0; j < 3; j++) {
+    //   console.log("{");
+      
+      // for (let i = 1,j=0; i < properties.length - 1; i++,j++) {
+      //   console.log(items[j][properties[i]] ," ,");
+      // }
+    //   console.log("}");
+    // }
+    // console.log("/////////////// new ////////////////");
+
+
+    var $trackBgColor = "#EBEBEB";
+    if (status == "winner") {
+      var $card1 = document.querySelector("#card1");
+      var $card2 = document.querySelector("#card2");
+      var $card3 = document.querySelector("#card3");
+    } else if (status == "loser") {
+      var $card4 = document.querySelector("#card4");
+      var $card5 = document.querySelector("#card5");
+      var $card6 = document.querySelector("#card6");
     }
+
+    var statisticsProfitChartOptions;
+    var statisticsProfitChart;
+
+    function createChart(
+      trackBgColor,
+      chartId,
+      chartOptions,
+      statisticsChartName
+    ) {
+      chartOptions = {
+        chart: {
+          height: 70,
+          type: "line",
+          toolbar: {
+            show: false,
+          },
+          zoom: {
+            enabled: false,
+          },
+        },
+        grid: {
+          borderColor: trackBgColor,
+          strokeDashArray: 5,
+          xaxis: {
+            lines: {
+              show: true,
+            },
+          },
+          yaxis: {
+            lines: {
+              show: false,
+            },
+          },
+          padding: {
+            top: -30,
+            bottom: -10,
+          },
+        },
+        stroke: {
+          width: 3,
+        },
+        colors: [window.colors.solid.info],
+        series: [
+          {
+            data: [0, 20, 5, 30, 15, 45],
+          },
+        ],
+        markers: {
+          size: 2,
+          colors: window.colors.solid.info,
+          strokeColors: window.colors.solid.info,
+          strokeWidth: 2,
+          strokeOpacity: 1,
+          strokeDashArray: 0,
+          fillOpacity: 1,
+          discrete: [
+            {
+              seriesIndex: 0,
+              dataPointIndex: 5,
+              fillColor: "#ffffff",
+              strokeColor: window.colors.solid.info,
+              size: 5,
+            },
+          ],
+          shape: "circle",
+          radius: 2,
+          hover: {
+            size: 3,
+          },
+        },
+        xaxis: {
+          labels: {
+            show: true,
+            style: {
+              fontSize: "0px",
+            },
+          },
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          },
+        },
+        yaxis: {
+          show: false,
+        },
+        tooltip: {
+          x: {
+            show: false,
+          },
+        },
+      };
+      statisticsChartName = new ApexCharts(chartId, chartOptions);
+      statisticsChartName.render();
+    }
+
+    if (status == "winner") {
+      // create chart 1
+      createChart(
+        $trackBgColor,
+        $card1,
+        statisticsProfitChartOptions,
+        statisticsProfitChart
+      );
+      // create chart 2
+      createChart(
+        $trackBgColor,
+        $card2,
+        statisticsProfitChartOptions,
+        statisticsProfitChart
+      );
+      // create chart 3
+      createChart(
+        $trackBgColor,
+        $card3,
+        statisticsProfitChartOptions,
+        statisticsProfitChart
+      );
+    } else if (status == "loser") {
+      // create chart 4
+      createChart(
+        $trackBgColor,
+        $card4,
+        statisticsProfitChartOptions,
+        statisticsProfitChart
+      );
+      // create chart 5
+      createChart(
+        $trackBgColor,
+        $card5,
+        statisticsProfitChartOptions,
+        statisticsProfitChart
+      );
+      // create chart 6
+      createChart(
+        $trackBgColor,
+        $card6,
+        statisticsProfitChartOptions,
+        statisticsProfitChart
+      );
+    }
+  }
 
   // get data from the json link
 
   // Momentum Builders 3D winners
-    fetch("https://api.apispreadsheets.com/data/8620/")
+  fetch("https://api.apispreadsheets.com/data/8620/")
     .then((response) => response.json())
     .then((data) => {
-        // Create Table from Json
+      // Create Table from Json
+      var status = "winner";
+      var properties = getJsonData(data, "#3DWinners");
+      // console.log(prop);
 
-        getJsonData(data, "#3DWinners", "#winners_line_chart");
-        // createLineChart();
+      var items = data.data.slice();
+      
+      function sortByProperty(property) {
+        return function (a, b) {
+          if (parseInt(a[property]) > parseInt(b[property])) return 1;
+          else if (parseInt(a[property]) < parseInt(b[property])) return -1;
+          return 0;
+        };
+      }
+      items.sort(sortByProperty("volume"));
+      // items.reverse(sortByProperty("volume"));
+
+      displayCards(items, "#winners_cards", 1, "text-center");
+      createAllCharts(status, properties, items);
     });
 
   // Momentum Builders 3D Losers
@@ -211,9 +328,27 @@ $(window).on("load", function () {
     .then((response) => response.json())
     .then((data) => {
       // Create Table from Json
-      
 
-      getJsonData(data, "#3DLosers", "#losers_line_chart");
-      // createLineChart();
+      // Create Table from Json
+      var status = "loser";
+
+      var properties  =getJsonData(data, "#3DLosers");
+      // get best 3 cards
+      var items = data.data.slice();
+      function sortByProperty(property) {
+        return function (a, b) {
+          if (parseInt(a[property]) > parseInt(b[property])) {
+            return 1;
+          } else if (parseInt(a[property]) < parseInt(b[property])) {
+            return -1;
+          }
+          return 0;
+        };
+      }
+      items.sort(sortByProperty("volume"));
+      items.reverse(sortByProperty("volume"));
+
+      displayCards(items, "#losers_cards", 4, "text-danger");
+      createAllCharts(status, properties ,items);
     });
 });

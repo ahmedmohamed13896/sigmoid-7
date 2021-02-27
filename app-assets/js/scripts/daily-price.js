@@ -68,60 +68,30 @@ $(window).on('load', function() {
                 return properties;
             }
 
-            // //////////////
-            function getBestChange(data) {
-                var changeByPattern = {
-                    "allChange": [],
-                    "change": [],
-                    "company": [],
-                    "price": [],
-                    "volume": []
-                };
-                $.each(data.data, function (key, value) {
-                    changeByPattern.allChange.push(value.Change);
-                });
-
-                function findLargest3() {
-                    changeByPattern.allChange.sort((a, b) => a < b ? 1 : a > b ? -1 : 0);
-                    changeByPattern.change = changeByPattern.allChange.slice(0, 3);
-                    $.each(data.data, function (key, value) {
-                        if (changeByPattern.change[0] == value.Change) {
-                            changeByPattern.company.push(value.Company);
-                            changeByPattern.price.push(value.Price);
-                            changeByPattern.volume.push(value.Volume);
-                        }
-                        if (changeByPattern.change[1] == value.Change) {
-                            changeByPattern.company.push(value.Company);
-                            changeByPattern.price.push(value.Price);
-                            changeByPattern.volume.push(value.Volume);
-                        }
-                        if (changeByPattern.change[2] == value.Change) {
-                            changeByPattern.company.push(value.Company);
-                            changeByPattern.price.push(value.Price);
-                            changeByPattern.volume.push(value.Volume);
-                        }
-                    });
-                    return changeByPattern;
-                }
-
-
-
-                return findLargest3();
-            }
+            
+            
 
             // display cards
 
-            function displayCards(cardObject, cardsID, cardNumber,className) {
+            function displayCards(data, cardsID, cardNumber,className) {
                 let html = `<div class="card-body statistics-body" >
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
-                                <h6 class="company text-center">${cardObject.company[0]}</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[0]}</h2>
+                                <h6 class="ticker text-center">${
+                                  data[data.length - 1].Ticker
+                                }</h6>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
+                  data[data.length - 1].Change
+                }</h2>
                                 <div class="d-flex justify-content-between">
-                                    <div class="vol ">Vol: <span>${cardObject.volume[0]}</span></div>
-                                    <div class="price ">Price: <span>${cardObject.price[0]}</span></div>
+                                    <div class="vol ">Vol: <span>${
+                                      data[data.length - 1].Volume
+                                    }</span></div>
+                                    <div class="price ">Price: <span>${
+                                      data[data.length - 1].Price
+                                    }</span></div>
                                 </div>
                                 <div id="card${cardNumber}"></div>
                             </div>
@@ -131,11 +101,19 @@ $(window).on('load', function() {
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
-                                <h6 class="company text-center">${cardObject.company[1]}</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[1]}</h2>
+                                <h6 class="ticker text-center">${
+                                  data[data.length - 2].Ticker
+                                }</h6>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
+                  data[data.length - 2].Change
+                }</h2>
                                 <div class="d-flex justify-content-between">
-                                    <div class="vol ">Vol: <span>${cardObject.volume[1]}</span></div>
-                                    <div class="price ">Price: <span>${cardObject.price[1]}</span></div>
+                                    <div class="vol ">Vol: <span>${
+                                      data[data.length - 2].Volume
+                                    }</span></div>
+                                    <div class="price ">Price: <span>${
+                                      data[data.length - 2].Price
+                                    }</span></div>
                                 </div>
                                 <div id="card${cardNumber + 1}"></div>
                             </div>
@@ -145,11 +123,19 @@ $(window).on('load', function() {
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
-                                <h6 class="company text-center">${cardObject.company[2]}</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[2]}</h2>
+                                <h6 class="ticker text-center">${
+                                  data[data.length - 3].Ticker
+                                }</h6>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
+                  data[data.length - 3].Change
+                }</h2>
                                 <div class="d-flex justify-content-between">
-                                    <div class="vol ">Vol: <span>${cardObject.volume[2]}</span></div>
-                                    <div class="price ">Price: <span>${cardObject.price[2]}</span></div>
+                                    <div class="vol ">Vol: <span>${
+                                      data[data.length - 3].Volume
+                                    }</span></div>
+                                    <div class="price ">Price: <span>${
+                                      data[data.length - 3].Price
+                                    }</span></div>
                                 </div>
                                 <div id="card${cardNumber + 2}"></div>
                             </div>
@@ -304,10 +290,23 @@ $(window).on('load', function() {
                     // Create Table from Json 
                     var status = "winner";
                     var prop = getJsonData(data, "#dailyWinners");
-                    console.log(prop);
+                    // console.log(prop);
                     // get best 3 cards
-                    var cardObject = getBestChange(data);
-                    displayCards(cardObject, "#winners_cards", 1,"text-center")
+                    
+                     var items = data.data.slice();
+                     console.log(items);
+                     function sortByProperty(property) {
+                       return function (a, b) {
+                         if (parseInt(a[property]) > parseInt(b[property]))
+                           return 1;
+                         else if (parseInt(a[property]) < parseInt(b[property]))
+                           return -1;
+                         return 0;
+                       };
+                     }
+                     items.sort(sortByProperty("Change"));
+
+                    displayCards(items, "#winners_cards", 1, "text-center");
                     createAllCharts(status);
 
                 });
@@ -317,14 +316,28 @@ $(window).on('load', function() {
             fetch('https://api.apispreadsheets.com/data/8602/')
                 .then(response => response.json())
                 .then(data => {
-                    // Create Table from Json 
-                    var status = "loser";
+                  // Create Table from Json
+                  var status = "loser";
 
-                    getJsonData(data, "#dailyLosers");
-                    // get best 3 cards
-                    var cardObject = getBestChange(data);
-                    displayCards(cardObject, "#losers_cards", 4, "text-danger")
-                    createAllCharts(status);
+                  getJsonData(data, "#dailyLosers");
+                  // get best 3 cards
+                  var items = data.data.slice();
+                  function sortByProperty(property) {
+                    return function (a, b) {
+                      if (parseInt(a[property]) > parseInt(b[property])) {
+                        return 1;
+                      } else if (
+                        parseInt(a[property]) < parseInt(b[property])
+                      ) {
+                        return -1;
+                      }
+                      return 0;
+                    };
+                  }
+                  items.sort(sortByProperty("Change"));
+                  items.reverse(sortByProperty("Change"));
+                  displayCards(items, "#losers_cards", 4, "text-danger");
+                  createAllCharts(status);
                 });
 
 
