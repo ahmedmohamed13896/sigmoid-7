@@ -75,9 +75,8 @@ $(window).on("load", function () {
                                   data[data.length - 1].ticker
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      data[data.length - 1].volume
-    }</h2>
-                               
+                                  data[data.length - 1].volume
+                                }%</h2>             
                                 <div id="card${cardNumber}"></div>
                             </div>
                         </div>
@@ -90,9 +89,8 @@ $(window).on("load", function () {
                                   data[data.length - 2].ticker
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      data[data.length - 2].volume
-    }</h2>
-                               
+                                  data[data.length - 2].volume
+                                }%</h2>
                                 <div id="card${cardNumber + 1}"></div>
                             </div>
                         </div>
@@ -105,9 +103,8 @@ $(window).on("load", function () {
                                   data[data.length - 3].ticker
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      data[data.length - 3].volume
-    }</h2>
-                               
+                                  data[data.length - 3].volume
+                                }%</h2>
                                 <div id="card${cardNumber + 2}"></div>
                             </div>
                         </div>
@@ -125,20 +122,8 @@ $(window).on("load", function () {
   function createAllCharts(status, properties, items) {
     // Charts
 
-    let obj ={
-      0:[],
-      1:[],
-      2:[]
-    };
-    // for (let j = 0; j < 3; j++) {
-    //   console.log("{");
-      
-      // for (let i = 1,j=0; i < properties.length - 1; i++,j++) {
-      //   console.log(items[j][properties[i]] ," ,");
-      // }
-    //   console.log("}");
-    // }
-    // console.log("/////////////// new ////////////////");
+    
+  
 
 
     var $trackBgColor = "#EBEBEB";
@@ -155,12 +140,8 @@ $(window).on("load", function () {
     var statisticsProfitChartOptions;
     var statisticsProfitChart;
 
-    function createChart(
-      trackBgColor,
-      chartId,
-      chartOptions,
-      statisticsChartName
-    ) {
+    function createChart(trackBgColor, chartId, chartOptions, statisticsChartName, items) {
+      
       chartOptions = {
         chart: {
           height: 70,
@@ -247,6 +228,7 @@ $(window).on("load", function () {
       };
       statisticsChartName = new ApexCharts(chartId, chartOptions);
       statisticsChartName.render();
+
     }
 
     if (status == "winner") {
@@ -269,8 +251,11 @@ $(window).on("load", function () {
         $trackBgColor,
         $card3,
         statisticsProfitChartOptions,
-        statisticsProfitChart
+        statisticsProfitChart,
+        items
       );
+      
+
     } else if (status == "loser") {
       // create chart 4
       createChart(
@@ -293,21 +278,22 @@ $(window).on("load", function () {
         statisticsProfitChartOptions,
         statisticsProfitChart
       );
+
     }
   }
 
   // get data from the json link
+
+
 
   // Momentum Builders 3D winners
   fetch("https://api.apispreadsheets.com/data/8620/")
     .then((response) => response.json())
     .then((data) => {
       // Create Table from Json
-      var status = "winner";
       var properties = getJsonData(data, "#3DWinners");
-      // console.log(prop);
-
-      var items = data.data.slice();
+      
+      let items = data.data.slice();
       
       function sortByProperty(property) {
         return function (a, b) {
@@ -316,12 +302,18 @@ $(window).on("load", function () {
           return 0;
         };
       }
+
       items.sort(sortByProperty("volume"));
       // items.reverse(sortByProperty("volume"));
-
+      // console.log(items);
+      
       displayCards(items, "#winners_cards", 1, "text-center");
-      createAllCharts(status, properties, items);
+      createAllCharts("winner", properties);
+
+      
+
     });
+
 
   // Momentum Builders 3D Losers
   fetch("https://api.apispreadsheets.com/data/8617/")
@@ -329,26 +321,25 @@ $(window).on("load", function () {
     .then((data) => {
       // Create Table from Json
 
-      // Create Table from Json
-      var status = "loser";
+        // Create Table from Json
+        
+        function sortByProperty(property) {
+          return function (a, b) {
+            if (parseInt(a[property]) > parseInt(b[property])) return 1;
+            else if (parseInt(a[property]) < parseInt(b[property])) return -1;
+            return 0;
+          };
+        }
 
-      var properties  =getJsonData(data, "#3DLosers");
-      // get best 3 cards
-      var items = data.data.slice();
-      function sortByProperty(property) {
-        return function (a, b) {
-          if (parseInt(a[property]) > parseInt(b[property])) {
-            return 1;
-          } else if (parseInt(a[property]) < parseInt(b[property])) {
-            return -1;
-          }
-          return 0;
-        };
-      }
-      items.sort(sortByProperty("volume"));
-      items.reverse(sortByProperty("volume"));
+        var properties = getJsonData(data, "#3DLosers");
+        // get best 3 cards
+        let items = data.data.slice();
+        items.sort(sortByProperty("volume"));
+        // items.reverse();
+      // console.log(items);
 
-      displayCards(items, "#losers_cards", 4, "text-danger");
-      createAllCharts(status, properties ,items);
+        displayCards(items, "#losers_cards", 4, "text-danger");
+        createAllCharts("loser", properties);
+      
     });
 });
