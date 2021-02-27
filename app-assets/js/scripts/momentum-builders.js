@@ -96,13 +96,6 @@ $(window).on("load", function () {
         successColorShade = "#28dac6",
         grid_line_color = "rgba(200, 200, 200, 0.2)"; // RGBA color helps in dark layout
 
-      // for(let i=0;i<chartDatesValues.length;i++){
-      //   chartDatesValues+= "%";
-      // }
-
-
-      // Line Chart
-      // --------------------------------------------------------------------
 
       // Wrap charts with div of height according to their data-height
       if (chartWrapper.length) {
