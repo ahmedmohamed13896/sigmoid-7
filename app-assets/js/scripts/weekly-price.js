@@ -28,7 +28,12 @@ $(window).on('load', function() {
         i != "Industry" &&
         i != "Country" &&
         i != "P/E" &&
-        i != "Id"
+        i != "Id" &&
+        i != "Perf Half" &&
+        i != "Perf Year" &&
+        i != "Perf YTD" &&
+        i != "Avg Volume" &&
+        i != "Recom"
       ) {
         properties.push(i);
         dataHTML += `<th>${i}</th>`;
@@ -49,7 +54,12 @@ $(window).on('load', function() {
           i != "Industry" &&
           i != "Country" &&
           i != "P/E" &&
-          i != "Id"
+          i != "Id" &&
+          i != "Perf Half" &&
+          i != "Perf Year" &&
+          i != "Perf YTD" &&
+          i != "Avg Volume" && 
+          i != "Recom"
         ) {
           if (value[properties[i]][0] == "-") {
             tableBody += `<td class="text-danger">${value[properties[i]]}</td>`;
@@ -75,7 +85,7 @@ $(window).on('load', function() {
     var changeByPattern = {
       allChange: [],
       change: [],
-      company: [],
+      ticker: [],
       price: [],
       volume: [],
     };
@@ -83,26 +93,30 @@ $(window).on('load', function() {
       changeByPattern.allChange.push(value.Change);
     });
 
+    
     function findLargest3() {
       changeByPattern.allChange.sort((a, b) => (a < b ? 1 : a > b ? -1 : 0));
       changeByPattern.change = changeByPattern.allChange.slice(0, 3);
+      
       $.each(data.data, function (key, value) {
         if (changeByPattern.change[0] == value.Change) {
-          changeByPattern.company.push(value.Company);
+          changeByPattern.ticker.push(value.Ticker);
           changeByPattern.price.push(value.Price);
           changeByPattern.volume.push(value.Volume);
         }
         if (changeByPattern.change[1] == value.Change) {
-          changeByPattern.company.push(value.Company);
+          changeByPattern.ticker.push(value.Ticker);
           changeByPattern.price.push(value.Price);
           changeByPattern.volume.push(value.Volume);
         }
         if (changeByPattern.change[2] == value.Change) {
-          changeByPattern.company.push(value.Company);
+          changeByPattern.ticker.push(value.Ticker);
           changeByPattern.price.push(value.Price);
           changeByPattern.volume.push(value.Volume);
         }
+        
       });
+
       return changeByPattern;
     }
 
@@ -118,11 +132,9 @@ $(window).on('load', function() {
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="company text-center">${
-                                  cardObject.company[0]
+                                  cardObject.ticker[0]
                                 }</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      cardObject.change[0]
-    }</h2>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[0]}</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
                                       cardObject.volume[0]
@@ -140,11 +152,9 @@ $(window).on('load', function() {
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="company text-center">${
-                                  cardObject.company[1]
+                                  cardObject.ticker[1]
                                 }</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      cardObject.change[1]
-    }</h2>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${cardObject.change[1]}</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
                                       cardObject.volume[1]
@@ -162,11 +172,9 @@ $(window).on('load', function() {
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="company text-center">${
-                                  cardObject.company[2]
+                                  cardObject.ticker[2]
                                 }</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      cardObject.change[2]
-    }</h2>
+                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${ cardObject.change[2]}</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
                                       cardObject.volume[2]
@@ -183,6 +191,7 @@ $(window).on('load', function() {
                 </div>
             </div>`;
 
+            
     $(cardsID).append(html);
   }
 
@@ -348,13 +357,13 @@ $(window).on('load', function() {
 
   // Weekly Winners
 
-  fetch("https://api.apispreadsheets.com/data/8619/")
+  fetch("https://api.apispreadsheets.com/data/8817/")
     .then((response) => response.json())
     .then((data) => {
       // Create Table from Json
       var status = "winner";
       var prop = getJsonData(data, "#weeklyWinners");
-      console.log(prop);
+      // console.log(prop);
       // get best 3 cards
       var cardObject = getBestChange(data);
       displayCards(cardObject, "#winners_cards", 1, "text-center");
@@ -362,7 +371,7 @@ $(window).on('load', function() {
     });
 
   // Weekly Losers
-  fetch("https://api.apispreadsheets.com/data/8618/")
+  fetch("https://api.apispreadsheets.com/data/8818/")
     .then((response) => response.json())
     .then((data) => {
       // Create Table from Json
