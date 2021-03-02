@@ -289,6 +289,8 @@ $(window).on('load', function() {
                 .then(data => {
                     // Create Table from Json 
                     var status = "winner";
+                    $(".loading-item").removeClass("d-flex").hide();
+
                     var prop = getJsonData(data, "#dailyWinners");
                     // console.log(prop);
                     // get best 3 cards
@@ -318,6 +320,7 @@ $(window).on('load', function() {
                 .then(data => {
                   // Create Table from Json
                   var status = "loser";
+                    $(".loading-item").removeClass("d-flex").hide();
 
                   getJsonData(data, "#dailyLosers");
                   // get best 3 cards

@@ -29,7 +29,8 @@ $(window).on('load', function() {
         i != "Industry" &&
         i != "Country" &&
         i != "P/E" &&
-        i != "Id"
+        i != "Id" &&
+        i != "chg %"
       ) {
         properties.push(i);
         dataHTML += `<th>${i}</th>`;
@@ -51,7 +52,8 @@ $(window).on('load', function() {
           i != "Industry" &&
           i != "Country" &&
           i != "P/E" &&
-          i != "Id"
+          i != "Id" &&
+          i != "chg %"
         ) {
           if (value[properties[i]]) {
             tableBody += `<td>${value[properties[i]]}</td>`;
@@ -80,7 +82,13 @@ $(window).on('load', function() {
                                   data[data.length - 1].companyName
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      data[data.length - 1]["chg %"]
+      className == "text-center"
+        ? data[data.length - 1]["premarketAdjusted"]
+        : className == "text-danger"
+        ? data[data.length - 1]["premarketAdjusted"] + "%"
+        : className == "text-center act"
+        ? data[data.length - 1]["premarketChangeAdjusted"] + "%"
+        : data[data.length - 1]["premarketAdjusted"]
     }</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
@@ -102,7 +110,13 @@ $(window).on('load', function() {
                                   data[data.length - 2].companyName
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      data[data.length - 2]["chg %"]
+      className == "text-center"
+        ? data[data.length - 2]["premarketAdjusted"]
+        : className == "text-danger"
+        ? data[data.length - 2]["premarketAdjusted"] + "%"
+        : className == "text-center act"
+        ? data[data.length - 2]["premarketChangeAdjusted"] + "%"
+        : data[data.length - 2]["premarketAdjusted"]
     }</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
@@ -124,7 +138,13 @@ $(window).on('load', function() {
                                   data[data.length - 3].companyName
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      data[data.length - 3]["chg %"]
+      className == "text-center"
+        ? data[data.length - 3]["premarketAdjusted"]
+        : className == "text-danger"
+        ? data[data.length - 3]["premarketAdjusted"] + "%"
+        : className == "text-center act"
+        ? data[data.length - 3]["premarketChangeAdjusted"] + "%"
+        : data[data.length - 3]["premarketAdjusted"]
     }</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
@@ -340,6 +360,8 @@ $(window).on('load', function() {
     .then((data) => {
       // Create Table from Json
       var status = "winner";
+      $(".loading-item").removeClass("d-flex").hide();
+
       var prop = getJsonData(data, "#preMarketGainers", "preMarketGainers");
       // console.log(prop);
       // get best 3 cards
@@ -371,6 +393,8 @@ $(window).on('load', function() {
     .then((data) => {
       // Create Table from Json
       var status = "loser";
+      $(".loading-item").removeClass("d-flex").hide();
+
       var prop = getJsonData(data, "#preMarketLaggards", "preMarketLaggards");
       // console.log(prop);
       // get best 3 cards
@@ -402,6 +426,8 @@ $(window).on('load', function() {
     .then((data) => {
       // Create Table from Json
       var status = "active";
+      $(".loading-item").removeClass("d-flex").hide();
+
       var prop = getJsonData(
         data,
         "#preMarketMostActive",
@@ -424,7 +450,7 @@ $(window).on('load', function() {
 
       console.log(items);
 
-      displayCards(items, "#preMarketMostActive_cards", 7, "text-center");
+      displayCards(items, "#preMarketMostActive_cards", 7, "text-center act");
       createAllCharts(status);
     });
 })

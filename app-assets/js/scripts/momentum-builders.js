@@ -291,6 +291,8 @@ $(window).on("load", function () {
     .then((response) => response.json())
     .then((data) => {
       // Create Table from Json
+      $(".loading-item").removeClass("d-flex").hide();
+
       var properties = getJsonData(data, "#3DWinners");
       
       let items = data.data.slice();
@@ -322,6 +324,7 @@ $(window).on("load", function () {
       // Create Table from Json
 
         // Create Table from Json
+      $(".loading-item").removeClass("d-flex").hide();
         
         function sortByProperty(property) {
           return function (a, b) {

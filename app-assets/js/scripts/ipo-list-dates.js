@@ -88,197 +88,149 @@ $(window).on('load', function() {
 
             // display cards
 
-            function displayCards(data, cardsID, cardNumber,className) {
-                let html = `<div class="card-body statistics-body" >
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
-                        <div class="card card-tiny-line-stats">
-                            <div class="card-body pb-50">
-                                <h6 class="ticker text-center">${
-                                  data[data.length - 1].name
-                                }</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-                  data[data.length - 1].shares
-                }</h2>
-                                <div class="d-flex justify-content-end">
-                                    <div class="price ">Price: <span>${
-                                      data[data.length - 1].priceRange
-                                    }</span></div>
-                                </div>
-                                <div id="card${cardNumber}"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
-                        <div class="card card-tiny-line-stats">
-                            <div class="card-body pb-50">
-                                <h6 class="ticker text-center">${
-                                  data[data.length - 2].name
-                                }</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-                  data[data.length - 2].shares
-                }</h2>
-                                <div class="d-flex justify-content-end">
-                                    <div class="price ">Price: <span>${
-                                      data[data.length - 2].priceRange
-                                    }</span></div>
-                                </div>
-                                <div id="card${cardNumber + 1}"></div>
-                            </div>
-                        </div>
-                    </div>
+            function displayCards(data, cardsID) {
+        
 
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                        <div class="card card-tiny-line-stats">
-                            <div class="card-body pb-50">
-                                <h6 class="ticker text-center">${
-                                  data[data.length - 3].name
-                                }</h6>
-                                <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-                  data[data.length - 3].shares
-                }</h2>
-                                <div class="d-flex justify-content-end">
-                                    <div class="price ">Price: <span>${
-                                      data[data.length - 3].priceRange
-                                    }</span></div>
+            let html = `
+            <div class="card-body statistics-body" >
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-12 my-2">
+                        <div class="card card-profile">
+                            <img src="app-assets/images/banner/banner-12.jpg" class="img-fluid card-img-top" alt="Profile Cover Photo">
+                            <div class="card-body">
+                                <div class="profile-image-wrapper">
+                                    <div class="profile-image">
+                                        <div class="avatar">
+                                            <img src="app-assets/images/portrait/small/avatar-s-9.jpg" alt="Profile Picture">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div id="card${cardNumber + 2}"></div>
+                                <h3>${data[data.length - 1].name}</h3>
+                                <h6 class="text-muted">${
+                                  data[data.length - 1].symbol
+                                }</h6>
+                                <div class="badge badge-light-primary profile-badge">${
+                                  data[data.length - 1]["ipoDate*"]
+                                }</div>
+                                <hr class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">exchange</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 1].exchange
+                                        }</h3>
+                                    </div>
+                                   <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">priceRange</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 1].priceRange
+                                        }</h3>
+                                    </div>
+                                   <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">shares</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 1].shares
+                                        }</h3>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
+                     </div>
+
+
+
+                     <div class="col-lg-4 col-md-6 col-sm-12 col-12 my-2">
+                        <div class="card card-profile">
+                            <img src="app-assets/images/banner/banner-12.jpg" class="img-fluid card-img-top" alt="Profile Cover Photo">
+                            <div class="card-body">
+                                <div class="profile-image-wrapper">
+                                    <div class="profile-image">
+                                        <div class="avatar">
+                                            <img src="app-assets/images/portrait/small/avatar-s-9.jpg" alt="Profile Picture">
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3>${data[data.length - 2].name}</h3>
+                                <h6 class="text-muted">${
+                                  data[data.length - 2].symbol
+                                }</h6>
+                                <div class="badge badge-light-primary profile-badge">${
+                                  data[data.length - 2]["ipoDate*"]
+                                }</div>
+                                <hr class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">exchange</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 2].exchange
+                                        }</h3>
+                                    </div>
+                                    <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">priceRange</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 2].priceRange
+                                        }</h3>
+                                    </div>
+                                    <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">shares</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 2].shares
+                                        }</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="col-lg-4 col-md-12 col-sm-12 col-12 my-2">
+                        <div class="card card-profile">
+                            <img src="app-assets/images/banner/banner-12.jpg" class="img-fluid card-img-top" alt="Profile Cover Photo">
+                            <div class="card-body">
+                                <div class="profile-image-wrapper">
+                                    <div class="profile-image">
+                                        <div class="avatar">
+                                            <img src="app-assets/images/portrait/small/avatar-s-9.jpg" alt="Profile Picture">
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3>${data[data.length - 3].name}</h3>
+                                <h6 class="text-muted">${
+                                  data[data.length - 3].symbol
+                                }</h6>
+                                <div class="badge badge-light-primary profile-badge">${
+                                  data[data.length - 3]["ipoDate*"]
+                                }</div>
+                                <hr class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">exchange</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 3].exchange
+                                        }</h3>
+                                    </div>
+                                    <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">priceRange</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 3].priceRange
+                                        }</h3>
+                                    </div>
+                                    <div class="card-data">
+                                        <h6 class="text-muted font-weight-bolder">shares</h6>
+                                        <h3 class="mb-0">${
+                                          data[data.length - 3].shares
+                                        }</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+
                 </div>
-            </div>`;
+            </div>
+               
+            `;
 
                 $(cardsID).append(html);
-            }
-
-
-            function createAllCharts(status) {
-                // Charts
-
-                var $trackBgColor = '#EBEBEB';
-                if(status == "winner"){
-                    var $card1 = document.querySelector('#card1');
-                    var $card2 = document.querySelector('#card2');
-                    var $card3 = document.querySelector('#card3');
-                }
-                else if(status == "loser"){
-                    var $card4 = document.querySelector('#card4');
-                    var $card5 = document.querySelector('#card5');
-                    var $card6 = document.querySelector('#card6');
-                }
-                
-                var statisticsProfitChartOptions;
-                var statisticsProfitChart;
-
-
-                function createChart(trackBgColor, chartId, chartOptions, statisticsChartName) {
-                    chartOptions = {
-                        chart: {
-                            height: 70,
-                            type: 'line',
-                            toolbar: {
-                                show: false
-                            },
-                            zoom: {
-                                enabled: false
-                            }
-                        },
-                        grid: {
-                            borderColor: trackBgColor,
-                            strokeDashArray: 5,
-                            xaxis: {
-                                lines: {
-                                    show: true
-                                }
-                            },
-                            yaxis: {
-                                lines: {
-                                    show: false
-                                }
-                            },
-                            padding: {
-                                top: -30,
-                                bottom: -10
-                            }
-                        },
-                        stroke: {
-                            width: 3
-                        },
-                        colors: [window.colors.solid.info],
-                        series: [
-                            {
-                                data: [0, 20, 5, 30, 15, 45]
-                            }
-                        ],
-                        markers: {
-                            size: 2,
-                            colors: window.colors.solid.info,
-                            strokeColors: window.colors.solid.info,
-                            strokeWidth: 2,
-                            strokeOpacity: 1,
-                            strokeDashArray: 0,
-                            fillOpacity: 1,
-                            discrete: [
-                                {
-                                    seriesIndex: 0,
-                                    dataPointIndex: 5,
-                                    fillColor: '#ffffff',
-                                    strokeColor: window.colors.solid.info,
-                                    size: 5
-                                }
-                            ],
-                            shape: 'circle',
-                            radius: 2,
-                            hover: {
-                                size: 3
-                            }
-                        },
-                        xaxis: {
-                            labels: {
-                                show: true,
-                                style: {
-                                    fontSize: '0px'
-                                }
-                            },
-                            axisBorder: {
-                                show: false
-                            },
-                            axisTicks: {
-                                show: false
-                            }
-                        },
-                        yaxis: {
-                            show: false
-                        },
-                        tooltip: {
-                            x: {
-                                show: false
-                            }
-                        }
-                    };
-                    statisticsChartName = new ApexCharts(chartId, chartOptions);
-                    statisticsChartName.render();
-                }
-
-                if (status == "winner") {
-                    // create chart 1
-                    createChart($trackBgColor, $card1, statisticsProfitChartOptions, statisticsProfitChart);
-                    // create chart 2
-                    createChart($trackBgColor, $card2, statisticsProfitChartOptions, statisticsProfitChart);
-                    // create chart 3
-                    createChart($trackBgColor, $card3, statisticsProfitChartOptions, statisticsProfitChart);
-                }
-                else if (status == "loser") {
-                    // create chart 4
-                    createChart($trackBgColor, $card4, statisticsProfitChartOptions, statisticsProfitChart);
-                    // create chart 5
-                    createChart($trackBgColor, $card5, statisticsProfitChartOptions, statisticsProfitChart);
-                    // create chart 6
-                    createChart($trackBgColor, $card6, statisticsProfitChartOptions, statisticsProfitChart);
-                }
             }
 
 
@@ -311,8 +263,8 @@ $(window).on('load', function() {
                 }
                 items.sort(sortByProperty("shares"));
 
-                displayCards(items, "#winners_cards", 1, "text-center");
-                createAllCharts(status);
+                $(".loading-item").removeClass("d-flex").hide();
+                displayCards(items, "#winners_cards");
               });
 
 

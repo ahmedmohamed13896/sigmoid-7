@@ -17,3 +17,33 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .card-company-table thead th{
 	white-space: nowrap;
 }
+.statistics-body .card-data h6,
+.statistics-body .card-data .h6,
+.statistics-body .card-data h3,
+.statistics-body .card-data .h3{
+	font-size: .8rem;
+}
+
+.statistics-body .card-data h6,
+.statistics-body .card-data .h6{
+	text-transform: uppercase;
+}
+
+
+@media(max-width:1366px){
+	.statistics-body .card-data h6,
+	.statistics-body .card-data .h6,
+	.statistics-body .card-data h3,
+	.statistics-body .card-data .h3{
+		font-size: .8rem;
+	}
+}
+
+@media(max-width:500px){
+	.statistics-body .card-data h6,
+	.statistics-body .card-data .h6,
+	.statistics-body .card-data h3,
+	.statistics-body .card-data .h3{
+		font-size: .6rem;
+	}
+}

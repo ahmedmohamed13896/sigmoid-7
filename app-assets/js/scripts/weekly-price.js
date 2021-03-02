@@ -326,6 +326,8 @@ $(window).on('load', function() {
     .then((data) => {
       // Create Table from Json
       var status = "winner";
+                $(".loading-item").removeClass("d-flex").hide();
+
       var prop = getJsonData(data, "#weeklyWinners");
       // console.log(prop);
       
@@ -353,6 +355,8 @@ $(window).on('load', function() {
       // Create Table from Json
       var status = "loser";
 
+      $(".loading-item").removeClass("d-flex").hide();
+
       getJsonData(data, "#weeklyLosers");
       // get best 3 cards
       var items = data.data.slice();
@@ -369,7 +373,6 @@ $(window).on('load', function() {
       }
       items.sort(sortByProperty("Change"));
       items.reverse(sortByProperty("Change"));
-      
       displayCards(items, "#losers_cards", 4, "text-danger");
       createAllCharts(status);
     });
