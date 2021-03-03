@@ -242,7 +242,7 @@ $(window).on('load', function() {
 
             // Daily Winners 
 
-            fetch("https://api.sheety.co/29d581fe29aafb1741ba848aa79f529e/fullSpectrumScreener/usIpOs")
+            fetch("https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/usIpOs")
               .then((response) => response.json())
               .then((data) => {
                 // Create Table from Json

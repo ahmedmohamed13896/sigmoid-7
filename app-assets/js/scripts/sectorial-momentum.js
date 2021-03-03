@@ -12,7 +12,7 @@ $(window).on('load', function() {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  function getJsonData(data, elementID, dataType) {
+  function getJsonData(data, elementID) {
     let properties = [];
     let tableBody = "";
 
@@ -21,16 +21,20 @@ $(window).on('load', function() {
                         <tr>`;
 
     // store data properties
-    for (let i in data[dataType][0]) {
+    for (let i in data.sectorPerformance[0]) {
       if (
-        i != "id" &&
         i != "No." &&
-        i != "No" &&
+        i != "no" &&
         i != "Industry" &&
         i != "Country" &&
         i != "P/E" &&
         i != "Id" &&
-        i != "chg %"
+        i != "id" &&
+        i != "perfHalf" &&
+        i != "perfYear" &&
+        i != "perfYtd" &&
+        i != "avgVolume" &&
+        i != "recom"
       ) {
         properties.push(i);
         dataHTML += `<th>${i}</th>`;
@@ -41,21 +45,29 @@ $(window).on('load', function() {
                     </thead>
                     <tbody>`;
 
-    $.each(data[dataType], function (key, value) {
+    $.each(data.sectorPerformance, function (key, value) {
       tableBody += `
                         <tr>`;
       for (let i = 0; i < properties.length; i++) {
         if (
-          i != "id" &&
           i != "No." &&
-          i != "No" &&
+          i != "no" &&
           i != "Industry" &&
           i != "Country" &&
           i != "P/E" &&
           i != "Id" &&
-          i != "chg %"
+          i != "id" &&
+          i != "perfHalf" &&
+          i != "perfYear" &&
+          i != "perfYtd" &&
+          i != "avgVolume" &&
+          i != "recom"
         ) {
-          if (value[properties[i]]) {
+          if (value[properties[i]][0] == "-") {
+            tableBody += `<td class="text-danger">${value[properties[i]]}</td>`;
+          } else if (value[properties[i]] == "") {
+            tableBody += `<td>${numberWithCommas(value[properties[i]])}</td>`;
+          } else if (value[properties[i]]) {
             tableBody += `<td>${value[properties[i]]}</td>`;
           }
         }
@@ -70,88 +82,65 @@ $(window).on('load', function() {
     return properties;
   }
 
+
   // display cards
 
   function displayCards(data, cardsID, cardNumber, className) {
+    
     let html = `<div class="card-body statistics-body" >
                 <div class="row">
-                    <div class="col-xl-6 col my-2">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
-                                  data[data.length - 1].companyName
+                                  data[data.length - 1].name
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      className == "text-center"
-        ? data[data.length - 1]["premarketAdjusted"]
-        : className == "text-danger"
-        ? data[data.length - 1]["premarketAdjusted"] + "%"
-        : className == "text-center act"
-        ? data[data.length - 1]["premarketChangeAdjusted"] + "%"
-        : data[data.length - 1]["premarketAdjusted"]
+      data[data.length - 1].change
     }</h2>
-                                <div class="d-flex justify-content-between">
-                                    <div class="vol ">Vol: <span>${
+                                <div class="d-flex justify-content-end">
+                                    <div class="vol ">Volume: <span>${
                                       data[data.length - 1].volume
                                     }</span></div>
-                                    <div class="price ">Price: <span>${
-                                      data[data.length - 1].price
-                                    }</span></div>
+                                    
                                 </div>
                                 <div id="card${cardNumber}"></div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-xl-6 col my-2">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
-                                  data[data.length - 2].companyName
+                                  data[data.length - 2].name
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      className == "text-center"
-        ? data[data.length - 2]["premarketAdjusted"]
-        : className == "text-danger"
-        ? data[data.length - 2]["premarketAdjusted"] + "%"
-        : className == "text-center act"
-        ? data[data.length - 2]["premarketChangeAdjusted"] + "%"
-        : data[data.length - 2]["premarketAdjusted"]
+      data[data.length - 2].change
     }</h2>
-                                <div class="d-flex justify-content-between">
-                                    <div class="vol ">Vol: <span>${
+                                <div class="d-flex justify-content-end">
+                                    <div class="vol ">Volume: <span>${
                                       data[data.length - 2].volume
                                     }</span></div>
-                                    <div class="price ">Price: <span>${
-                                      data[data.length - 2].price
-                                    }</span></div>
+                                   
                                 </div>
                                 <div id="card${cardNumber + 1}"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-xl-6 col  my-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
-                                  data[data.length - 3].companyName
+                                  data[data.length - 3].name
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-      className == "text-center"
-        ? data[data.length - 3]["premarketAdjusted"]
-        : className == "text-danger"
-        ? data[data.length - 3]["premarketAdjusted"] + "%"
-        : className == "text-center act"
-        ? data[data.length - 3]["premarketChangeAdjusted"] + "%"
-        : data[data.length - 3]["premarketAdjusted"]
+      data[data.length - 3].change
     }</h2>
-                                <div class="d-flex justify-content-between">
-                                    <div class="vol ">Vol: <span>${
+                                <div class="d-flex justify-content-end">
+                                    <div class="vol ">Volume: <span>${
                                       data[data.length - 3].volume
-                                    }</span></div>
-                                    <div class="price ">Price: <span>${
-                                      data[data.length - 3].price
                                     }</span></div>
                                 </div>
                                 <div id="card${cardNumber + 2}"></div>
@@ -177,10 +166,6 @@ $(window).on('load', function() {
       var $card4 = document.querySelector("#card4");
       var $card5 = document.querySelector("#card5");
       var $card6 = document.querySelector("#card6");
-    } else if (status == "active") {
-      var $card7 = document.querySelector("#card7");
-      var $card8 = document.querySelector("#card8");
-      var $card9 = document.querySelector("#card9");
     }
 
     var statisticsProfitChartOptions;
@@ -324,37 +309,15 @@ $(window).on('load', function() {
         statisticsProfitChartOptions,
         statisticsProfitChart
       );
-    } else if (status == "active") {
-      // create chart 7
-      createChart(
-        $trackBgColor,
-        $card7,
-        statisticsProfitChartOptions,
-        statisticsProfitChart
-      );
-      // create chart 8
-      createChart(
-        $trackBgColor,
-        $card8,
-        statisticsProfitChartOptions,
-        statisticsProfitChart
-      );
-      // create chart 9
-      createChart(
-        $trackBgColor,
-        $card9,
-        statisticsProfitChartOptions,
-        statisticsProfitChart
-      );
     }
   }
 
   // get data from the json link
 
-  //preMarketGainers
+  // sectoial momentum
 
   fetch(
-    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketGainers"
+    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/sectorPerformance"
   )
     .then((response) => response.json())
     .then((data) => {
@@ -362,96 +325,53 @@ $(window).on('load', function() {
       var status = "winner";
       $(".loading-item").removeClass("d-flex").hide();
 
-      var prop = getJsonData(data, "#preMarketGainers", "preMarketGainers");
+      var prop = getJsonData(data, "#weeklyWinners");
       // console.log(prop);
-      // get best 3 cards
 
-      var items = data["preMarketGainers"].slice();
+      var items = data.sectorPerformance.slice();
       console.log(items);
       function sortByProperty(property) {
         return function (a, b) {
-          if (parseFloat(a[property]) > parseFloat(b[property])) return 1;
-          else if (parseFloat(a[property]) < parseFloat(b[property])) return -1;
+          if (parseInt(a[property]) > parseInt(b[property])) return 1;
+          else if (parseInt(a[property]) < parseInt(b[property])) return -1;
           return 0;
         };
       }
-      items.sort(sortByProperty("premarketAdjusted"));
-      // items.reverse(sortByProperty("premarketAdjusted"));
+      items.sort(sortByProperty("change"));
+      items.reverse(sortByProperty("change"));
 
-      console.log(items);
-
-      displayCards(items, "#preMarketGainers_cards", 1, "text-center");
+      displayCards(items, "#winners_cards", 1, "text-center");
       createAllCharts(status);
     });
 
-  // preMarketLaggards
+  // Weekly Losers
+  // fetch("https://api.apispreadsheets.com/data/8818/")
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     // Create Table from Json
+  //     var status = "loser";
 
-  fetch(
-    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketLaggards"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      // Create Table from Json
-      var status = "loser";
-      $(".loading-item").removeClass("d-flex").hide();
+  //     $(".loading-item").removeClass("d-flex").hide();
 
-      var prop = getJsonData(data, "#preMarketLaggards", "preMarketLaggards");
-      // console.log(prop);
-      // get best 3 cards
-
-      var items = data["preMarketLaggards"].slice();
-      console.log(items);
-      function sortByProperty(property) {
-        return function (a, b) {
-          if (parseFloat(a[property]) > parseFloat(b[property])) return 1;
-          else if (parseFloat(a[property]) < parseFloat(b[property])) return -1;
-          return 0;
-        };
-      }
-      items.sort(sortByProperty("premarketAdjusted"));
-      items.reverse(sortByProperty("premarketAdjusted"));
-
-
-      displayCards(items, "#preMarketLaggards_cards", 4, "text-danger");
-      createAllCharts(status);
-    });
-
-  // preMarketMostActive
-
-  fetch(
-    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketMostActive"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      // Create Table from Json
-      var status = "active";
-      $(".loading-item").removeClass("d-flex").hide();
-
-      var prop = getJsonData(
-        data,
-        "#preMarketMostActive",
-        "preMarketMostActive"
-      );
-      // console.log(prop);
-      // get best 3 cards
-
-      var items = data["preMarketMostActive"].slice();
-      console.log(items);
-      function sortByProperty(property) {
-        return function (a, b) {
-          if (parseFloat(a[property]) > parseFloat(b[property])) return 1;
-          else if (parseFloat(a[property]) < parseFloat(b[property])) return -1;
-          return 0;
-        };
-      }
-      items.sort(sortByProperty("premarketChangeAdjusted"));
-    //   items.reverse(sortByProperty("premarketAdjusted"));
-
-      console.log(items);
-
-      displayCards(items, "#preMarketMostActive_cards", 7, "text-center act");
-      createAllCharts(status);
-    });
+  //     getJsonData(data, "#weeklyLosers");
+  //     // get best 3 cards
+  //     var items = data.sectorPerformance.slice();
+  //     function sortByProperty(property) {
+  //       return function (a, b) {
+  //         if (parseInt(a[property]) > parseInt(b[property])) {
+  //           return 1;
+  //         }
+  //         else if (parseInt(a[property]) < parseInt(b[property])){
+  //           return -1;
+  //         } 
+  //         return 0;
+  //       };
+  //     }
+  //     items.sort(sortByProperty("Change"));
+  //     items.reverse(sortByProperty("Change"));
+  //     displayCards(items, "#losers_cards", 4, "text-danger");
+  //     createAllCharts(status);
+  //   });
 })
         
         

@@ -25,8 +25,8 @@ $(window).on('load', function() {
                         <tr>`;
 
                 // store data properties 
-                for (let i in data.data[0]) {
-                    if (i != "No." && i != "No" && i != "Industry" && i != "Country" && i != "P/E" && i != "Id") {
+                for (let i in data.overBought[0]) {
+                    if (i != "No." && i != "no" && i != "industry" && i != "country" && i != "p/e" && i != "id") {
                         properties.push(i);
                         dataHTML += `<th>${i}</th>`;
                     }
@@ -39,23 +39,32 @@ $(window).on('load', function() {
 
 
 
-                $.each(data.data, function (key, value) {
+                $.each(data.overBought, function (key, value) {
 
 
 
                     tableBody += `
                         <tr>`;
                     for (let i = 0; i < properties.length; i++) {
-                        if (i != "No." && i != "No" && i != "Industry" && i != "Country" && i != "P/E" && i != "Id") {
-                            if (value[properties[i]][0] == '-') {
-                                tableBody += `<td class="text-danger">${value[properties[i]]}</td>`;
-                            }
-                            else if (value[properties[i]] == "") {
-                                tableBody += `<td>${numberWithCommas(value[properties[i]])}</td>`;
-                            }
-                            else if (value[properties[i]]) {
-                                tableBody += `<td>${value[properties[i]]}</td>`;
-                            }
+                        if (
+                          i != "No." &&
+                          i != "no" &&
+                          i != "industry" &&
+                          i != "country" &&
+                          i != "p/e" &&
+                          i != "id"
+                        ) {
+                          if (value[properties[i]][0] == "-") {
+                            tableBody += `<td class="text-danger">${
+                              value[properties[i]]
+                            }</td>`;
+                          } else if (value[properties[i]] == "") {
+                            tableBody += `<td>${numberWithCommas(
+                              value[properties[i]]
+                            )}</td>`;
+                          } else if (value[properties[i]]) {
+                            tableBody += `<td>${value[properties[i]]}</td>`;
+                          }
                         }
                     }
                     tableBody += `
@@ -80,17 +89,17 @@ $(window).on('load', function() {
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
-                                  data[data.length - 1].Ticker
+                                  data[data.length - 1].ticker
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-                  data[data.length - 1].Change
+                  data[data.length - 1].change
                 }</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
-                                      data[data.length - 1].Volume
+                                      data[data.length - 1].volume
                                     }</span></div>
                                     <div class="price ">Price: <span>${
-                                      data[data.length - 1].Price
+                                      data[data.length - 1].price
                                     }</span></div>
                                 </div>
                                 <div id="card${cardNumber}"></div>
@@ -102,17 +111,17 @@ $(window).on('load', function() {
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
-                                  data[data.length - 2].Ticker
+                                  data[data.length - 2].ticker
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-                  data[data.length - 2].Change
+                  data[data.length - 2].change
                 }</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
-                                      data[data.length - 2].Volume
+                                      data[data.length - 2].volume
                                     }</span></div>
                                     <div class="price ">Price: <span>${
-                                      data[data.length - 2].Price
+                                      data[data.length - 2].price
                                     }</span></div>
                                 </div>
                                 <div id="card${cardNumber + 1}"></div>
@@ -124,17 +133,17 @@ $(window).on('load', function() {
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
-                                  data[data.length - 3].Ticker
+                                  data[data.length - 3].ticker
                                 }</h6>
                                 <h2 class="font-weight-bolder mb-1 text-center ${className}">${
-                  data[data.length - 3].Change
+                  data[data.length - 3].change
                 }</h2>
                                 <div class="d-flex justify-content-between">
                                     <div class="vol ">Vol: <span>${
-                                      data[data.length - 3].Volume
+                                      data[data.length - 3].volume
                                     }</span></div>
                                     <div class="price ">Price: <span>${
-                                      data[data.length - 3].Price
+                                      data[data.length - 3].price
                                     }</span></div>
                                 </div>
                                 <div id="card${cardNumber + 2}"></div>
@@ -282,65 +291,42 @@ $(window).on('load', function() {
             // get data from the json link 
 
 
+
             // Daily Winners 
 
-            fetch('https://api.apispreadsheets.com/data/8603/')
-                .then(response => response.json())
-                .then(data => {
-                    // Create Table from Json 
-                    var status = "winner";
-                    $(".loading-item").removeClass("d-flex").hide();
+            fetch(
+              "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/overBought"
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                // Create Table from Json
+                var status = "winner";
+                $(".loading-item").removeClass("d-flex").hide();
 
-                    var prop = getJsonData(data, "#dailyWinners");
-                    // console.log(prop);
-                    // get best 3 cards
-                    
-                     var items = data.data.slice();
-                     console.log(items);
-                     function sortByProperty(property) {
-                       return function (a, b) {
-                         if (Number(a[property]) > Number(b[property]))
-                           return 1;
-                         else if (Number(a[property]) < Number(b[property]))
-                           return -1;
-                         return 0;
-                       };
-                     }
-                     items.sort(sortByProperty("Change"));
-                  items.reverse(sortByProperty("Change"));
+                var prop = getJsonData(data, "#dailyWinners");
+                // console.log(prop);
+                // get best 3 cards
 
-                    displayCards(items, "#winners_cards", 1, "text-center");
-                    createAllCharts(status);
+                var items = data.overBought.slice();
 
-                });
+                function sortByProperty(property) {
+                  return function (a, b) {
+                    if (Number(a[property]) > Number(b[property])) return 1;
+                    else if (Number(a[property]) < Number(b[property]))
+                      return -1;
+                    return 0;
+                  };
+                }
+                items.sort(sortByProperty("change"));
+                //  items.sort(sortByProperty("change"));
+                console.log(items);
+
+                displayCards(items, "#winners_cards", 1, "text-center");
+                createAllCharts(status);
+              });
 
 
-            // Daily Losers
-            fetch('https://api.apispreadsheets.com/data/8602/')
-                .then(response => response.json())
-                .then(data => {
-                  // Create Table from Json
-                  var status = "loser";
-                    $(".loading-item").removeClass("d-flex").hide();
-
-                  getJsonData(data, "#dailyLosers");
-                  // get best 3 cards
-                  var items = data.data.slice();
-                  function sortByProperty(property) {
-                    return function (a, b) {
-                      if (Number(a[property]) > Number(b[property])) {
-                        return 1;
-                      } else if (Number(a[property]) < Number(b[property])) {
-                        return -1;
-                      }
-                      return 0;
-                    };
-                  }
-                  items.sort(sortByProperty("Change"));
-                  items.reverse(sortByProperty("Change"));
-                  displayCards(items, "#losers_cards", 4, "text-danger");
-                  createAllCharts(status);
-                });
+           
 
 
 

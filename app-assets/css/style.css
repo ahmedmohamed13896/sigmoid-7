@@ -29,6 +29,11 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 	text-transform: uppercase;
 }
 
+.card-statistics .statistics-body .vol,
+.card-statistics .statistics-body .price{
+  font-size:.9rem;
+}
+
 
 @media(max-width:1366px){
 	.statistics-body .card-data h6,
