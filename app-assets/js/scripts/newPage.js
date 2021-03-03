@@ -33,11 +33,7 @@ $(window).on('load', function() {
 //   storedText
 // );
 
-jQuery.ajaxPrefilter(function (options) {
-  if (options.crossDomain && jQuery.support.cors) {
-    options.url = "https://cors-anywhere.herokuapp.com/" + options.url;
-  }
-});
+
 
 
 
@@ -86,10 +82,11 @@ jQuery.ajaxPrefilter(function (options) {
 
 
 
- fetch("https://sparticus.xyz/newsscan/index.php?quote=DDD")
+ fetch("https://sparticus.xyz/newsscan/index.php?quote=DDD", {
+   mode: "no-cors",
+ })
    .then((response) => response.json())
    .then((data) => {
-
      $(".loading-item").removeClass("d-flex").hide();
 
      var prop = getJsonData(data, "#newsTable");
