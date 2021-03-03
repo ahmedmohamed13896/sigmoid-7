@@ -33,6 +33,15 @@ $(window).on('load', function() {
 //   storedText
 // );
 
+jQuery.ajaxPrefilter(function (options) {
+  if (options.crossDomain && jQuery.support.cors) {
+    options.url =
+      "https://sparticus.xyz/newsscan/index.php?quote=DDD" + options.url;
+  }
+});
+
+
+
 
 
  function getJsonData(data, elementID) {
