@@ -35,8 +35,7 @@ $(window).on('load', function() {
 
 jQuery.ajaxPrefilter(function (options) {
   if (options.crossDomain && jQuery.support.cors) {
-    options.url =
-      "https://sparticus.xyz/newsscan/index.php?quote=DDD" + options.url;
+    options.url = "https://cors-anywhere.herokuapp.com/" + options.url;
   }
 });
 
