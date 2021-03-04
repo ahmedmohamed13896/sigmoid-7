@@ -33,6 +33,17 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .card-statistics .statistics-body .price{
   font-size:.9rem;
 }
+#news_cards .card-body{
+	max-height: 65vh;
+	overflow-y: auto;
+}
+
+@media(min-width:580px){
+	#news_cards .headLine{
+		max-width: calc(100% - 80px);
+	}
+}
+
 
 
 @media(max-width:1366px){

@@ -75,7 +75,7 @@ $(window).on('load', function() {
   function displayCards(data, cardsID, cardNumber, className) {
     let html = `<div class="card-body statistics-body" >
                 <div class="row">
-                    <div class="col-xl-6 col my-2">
+                    <div class="col-xl-6 col-md col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
@@ -103,7 +103,7 @@ $(window).on('load', function() {
                         </div>
                     </div>
                     
-                    <div class="col-xl-6 col my-2">
+                    <div class="col-xl-6 col-md col-12 my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${
@@ -131,7 +131,7 @@ $(window).on('load', function() {
                         </div>
                     </div>
 
-                    <div class="col-xl-6 col  my-2">
+                    <div class="col-xl-6 col-md col-12  my-2">
                         <div class="card card-tiny-line-stats">
                             <div class="card-body pb-50">
                                 <h6 class="ticker text-center">${

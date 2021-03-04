@@ -9,7 +9,7 @@
     <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>New Page</title>
+    <title>Symbol Details</title>
     <link rel="apple-touch-icon" href="app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
@@ -466,10 +466,10 @@
                     </li>
             
                     <li class=" nav-item active">
-                        <a class="d-flex align-items-center" href="newPage.html">
+                        <a class="d-flex align-items-center" href="app-symbol-details.html">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Sectorial-Momentum">
-                                New Page
+                                Symbol Details
                             </span>
                         </a>
                     </li>
@@ -822,9 +822,86 @@
                     
 
                 
+                   
 
+
+                    <!-- ******************** -->
+                    <div class="row match-height">
+                        <!-- Statistics Card -->
+                        <div class="col-xl-12 col-12">
+                            <div class="card card-statistics">
+                                <div class="card-header">
+                                    <h4 class="card-title">Revenue</h4>
+                                    <div class="d-flex align-items-center">
+                                        <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
+                                    </div>
+                                </div>
+                                <div class="loading-item d-flex justify-content-center my-1">
+                                    <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="revenue_chart"></div>
+                                </div>
+                                <!-- Append Revenue data here  -->
+                    
+                            </div>
+                        </div>
+                        <!--/ Statistics Card -->
+                    </div>
 
                     
+
+                    <!-- ******************** -->
+                    <div class="row match-height">
+                        <!-- Statistics Card -->
+                        <div class="col-xl-12 col-12">
+                            <div class="card card-statistics">
+                                <div class="card-header">
+                                    <h4 class="card-title">Liquidity</h4>
+                                    <div class="d-flex align-items-center">
+                                        <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
+                                    </div>
+                                </div>
+                                <div class="loading-item d-flex justify-content-center my-1">
+                                    <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="liquidity_chart"></div>
+                                </div>
+                                <!-- Append Revenue data here  -->
+                    
+                            </div>
+                        </div>
+                        <!--/ Statistics Card -->
+                    </div>
+
+
+
+
+                    <!-- ******************** -->
+                    <div class="row match-height">
+                        <!-- Statistics Card -->
+                        <div class="col-xl-12 col-12">
+                            <div class="card card-statistics">
+                                <div class="card-header">
+                                    <h4 class="card-title">Price</h4>
+                                    <div class="d-flex align-items-center">
+                                        <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
+                                    </div>
+                                </div>
+                                <div class="loading-item d-flex justify-content-center my-1">
+                                    <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="price_chart"></div>
+                                </div>
+                                <!-- Append Revenue data here  -->
+                    
+                            </div>
+                        </div>
+                        <!--/ Statistics Card -->
+                    </div>
+
 
 
 
@@ -839,30 +916,19 @@
                                     <div class="d-flex align-items-center">
                                         <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
                                     </div>
-                                </div>                   
+                                </div>   
+                                <div class="loading-item d-flex justify-content-center my-1">
+                                    <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+                                </div>
+                                
+                                <!-- Append News data here  -->
+                           
                             </div>
                         </div>
                         <!--/ Statistics Card -->
                     </div>
                     
-                    <!--  News table  -->
-                    <div class="row match-height">
-                        <!-- Company Table Card -->
-                        <div class="col-lg-12 col-12">
-                            <div class="card card-company-table">
-                                <div class="card-body p-0">
-                                    <div class="table-responsive">
-                                        <div class="loading-item d-flex justify-content-center my-1">
-                                            <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
-                                        </div>
-                                        <table class="table" id="newsTable">
-                    
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
 
 
 
@@ -907,7 +973,8 @@
 
     <!-- Daily Price Scripts -->
 
-    <script src="app-assets/js/scripts/newPage.js"></script>
+
+    <script src="app-assets/js/scripts/symbol-details.js"></script>
     
 </body>
 <!-- END: Body-->
