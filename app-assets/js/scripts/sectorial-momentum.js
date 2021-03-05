@@ -317,7 +317,7 @@ $(window).on('load', function() {
 
   function sectorPerformanceFunc(data){
     // save data in local storage
-    sessionStorage.setItem("sectorPerformanceData", JSON.stringify(data));
+    localStorage.setItem("sectorPerformanceData", JSON.stringify(data));
 
 
     // Create Table from Json
@@ -361,14 +361,14 @@ $(window).on('load', function() {
 
 
     function getData(obj) {
-      console.log(obj + " from inside sessionStorage");
-      var retivedData = JSON.parse(sessionStorage.getItem(obj));
+      console.log(obj + " from inside localStorage");
+      var retivedData = JSON.parse(localStorage.getItem(obj));
         sectorPerformanceFunc(retivedData);
     }
 
-    sessionStorage.getItem("sectorPerformanceData") == "" ||
-    sessionStorage.getItem("sectorPerformanceData") == undefined ||
-    sessionStorage.getItem("sectorPerformanceData") == null
+    localStorage.getItem("sectorPerformanceData") == "" ||
+    localStorage.getItem("sectorPerformanceData") == undefined ||
+    localStorage.getItem("sectorPerformanceData") == null
       ? fetchSectorPerformanceData()
       : getData("sectorPerformanceData");
 

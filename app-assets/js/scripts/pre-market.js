@@ -355,7 +355,7 @@ $(window).on('load', function() {
 
    function preMarketGainersFunc(data) {
      // save data in local storage
-     sessionStorage.setItem("preMarketGainersData", JSON.stringify(data));
+     localStorage.setItem("preMarketGainersData", JSON.stringify(data));
 
      // Create Table from Json
      var status = "winner";
@@ -396,8 +396,8 @@ $(window).on('load', function() {
    }
 
     function getData(obj) {
-      console.log(obj + " from inside sessionStorage");
-      var retivedData = JSON.parse(sessionStorage.getItem(obj));
+      console.log(obj + " from inside localStorage");
+      var retivedData = JSON.parse(localStorage.getItem(obj));
       if (obj == "preMarketGainersData") {
         preMarketGainersFunc(retivedData);
       } else if (obj == "preMarketLaggardsData") {
@@ -408,9 +408,9 @@ $(window).on('load', function() {
     }
 
 
-     sessionStorage.getItem("preMarketGainersData") == "" ||
-     sessionStorage.getItem("preMarketGainersData") == undefined ||
-     sessionStorage.getItem("preMarketGainersData") == null
+     localStorage.getItem("preMarketGainersData") == "" ||
+     localStorage.getItem("preMarketGainersData") == undefined ||
+     localStorage.getItem("preMarketGainersData") == null
        ? fetchPreMarketGainersData()
        : getData("preMarketGainersData");
 
@@ -421,7 +421,7 @@ $(window).on('load', function() {
 
     function preMarketLaggardsFunc (data){
       // save data in local storage
-      sessionStorage.setItem("preMarketLaggardsData", JSON.stringify(data));
+      localStorage.setItem("preMarketLaggardsData", JSON.stringify(data));
 
       // Create Table from Json
       var status = "loser";
@@ -460,9 +460,9 @@ $(window).on('load', function() {
       });
     }
 
-     sessionStorage.getItem("preMarketLaggardsData") == "" ||
-     sessionStorage.getItem("preMarketLaggardsData") == undefined ||
-     sessionStorage.getItem("preMarketLaggardsData") == null
+     localStorage.getItem("preMarketLaggardsData") == "" ||
+     localStorage.getItem("preMarketLaggardsData") == undefined ||
+     localStorage.getItem("preMarketLaggardsData") == null
        ? fetchPreMarketLaggardsData()
        : getData("preMarketLaggardsData");
 
@@ -476,7 +476,7 @@ $(window).on('load', function() {
 
     function preMarketMostActiveFunc (data){
       // save data in local storage
-      sessionStorage.setItem("preMarketMostActiveData", JSON.stringify(data));
+      localStorage.setItem("preMarketMostActiveData", JSON.stringify(data));
 
       // Create Table from Json
       var status = "active";
@@ -521,9 +521,9 @@ $(window).on('load', function() {
          });
      }
 
-       sessionStorage.getItem("preMarketMostActiveData") == "" ||
-       sessionStorage.getItem("preMarketMostActiveData") == undefined ||
-       sessionStorage.getItem("preMarketMostActiveData") == null
+       localStorage.getItem("preMarketMostActiveData") == "" ||
+       localStorage.getItem("preMarketMostActiveData") == undefined ||
+       localStorage.getItem("preMarketMostActiveData") == null
          ? fetchPreMarketMostActiveData()
          : getData("preMarketMostActiveData");
 

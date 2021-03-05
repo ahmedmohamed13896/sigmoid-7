@@ -286,7 +286,7 @@ $(window).on('load', function() {
 
             function volumeRankingFunc (data){
               // save data in local storage
-              sessionStorage.setItem("volumeRankingData", JSON.stringify(data));
+              localStorage.setItem("volumeRankingData", JSON.stringify(data));
               
               // Create Table from Json
               var status = "winner";
@@ -323,15 +323,15 @@ $(window).on('load', function() {
             }
 
              function getData(obj) {
-               console.log(obj + " from inside sessionStorage");
-               var retivedData = JSON.parse(sessionStorage.getItem(obj));
+               console.log(obj + " from inside localStorage");
+               var retivedData = JSON.parse(localStorage.getItem(obj));
                  volumeRankingFunc(retivedData);
              }
 
              
-            sessionStorage.getItem("volumeRankingData") == "" ||
-            sessionStorage.getItem("volumeRankingData") == undefined ||
-            sessionStorage.getItem("volumeRankingData") == null
+            localStorage.getItem("volumeRankingData") == "" ||
+            localStorage.getItem("volumeRankingData") == undefined ||
+            localStorage.getItem("volumeRankingData") == null
               ? fetchVolumeRankingData()
               : getData("volumeRankingData");
                 

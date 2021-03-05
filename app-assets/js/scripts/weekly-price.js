@@ -324,7 +324,7 @@ $(window).on('load', function() {
 
   function weeklyWinnersFunc (data){
     // save data in local storage
-    sessionStorage.setItem("weeklyWinnersData", JSON.stringify(data));
+    localStorage.setItem("weeklyWinnersData", JSON.stringify(data));
     // Create Table from Json
     var status = "winner";
     $(".loading-item").removeClass("d-flex").hide();
@@ -360,8 +360,8 @@ $(window).on('load', function() {
   }
 
    function getData(obj) {
-     console.log(obj + " from inside sessionStorage");
-     var retivedData = JSON.parse(sessionStorage.getItem(obj));
+     console.log(obj + " from inside localStorage");
+     var retivedData = JSON.parse(localStorage.getItem(obj));
      if (obj == "weeklyWinnersData") {
        weeklyWinnersFunc(retivedData);
      } else if (obj == "weeklyLosersData") {
@@ -370,9 +370,9 @@ $(window).on('load', function() {
    }
 
 
-    sessionStorage.getItem("weeklyWinnersData") == "" ||
-    sessionStorage.getItem("weeklyWinnersData") == undefined ||
-    sessionStorage.getItem("weeklyWinnersData") == null
+    localStorage.getItem("weeklyWinnersData") == "" ||
+    localStorage.getItem("weeklyWinnersData") == undefined ||
+    localStorage.getItem("weeklyWinnersData") == null
       ? fetchWeeklyWinnersData()
       : getData("weeklyWinnersData");
                 
@@ -387,7 +387,7 @@ $(window).on('load', function() {
 
  function weeklyLosersFunc (data){
    // save data in local storage
-   sessionStorage.setItem("weeklyLosersData", JSON.stringify(data));
+   localStorage.setItem("weeklyLosersData", JSON.stringify(data));
 
    // Create Table from Json
    var status = "loser";
@@ -425,9 +425,9 @@ $(window).on('load', function() {
   }
 
 
-      sessionStorage.getItem("weeklyLosersData") == "" ||
-      sessionStorage.getItem("weeklyLosersData") == undefined ||
-      sessionStorage.getItem("weeklyLosersData") == null
+      localStorage.getItem("weeklyLosersData") == "" ||
+      localStorage.getItem("weeklyLosersData") == undefined ||
+      localStorage.getItem("weeklyLosersData") == null
         ? fetchWeeklyLosersData()
         : getData("weeklyLosersData");
 

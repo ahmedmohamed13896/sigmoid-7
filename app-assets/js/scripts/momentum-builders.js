@@ -292,7 +292,7 @@ $(window).on("load", function () {
 
   function _3dWinnersFunc (data){
     // save data in local storage
-    sessionStorage.setItem("3dWinnersData", JSON.stringify(data));
+    localStorage.setItem("3dWinnersData", JSON.stringify(data));
 
     // Create Table from Json
     $(".loading-item").removeClass("d-flex").hide();
@@ -328,8 +328,8 @@ $(window).on("load", function () {
 
 
   function getData(obj) {
-    console.log(obj + " from inside sessionStorage");
-    var retivedData = JSON.parse(sessionStorage.getItem(obj));
+    console.log(obj + " from inside localStorage");
+    var retivedData = JSON.parse(localStorage.getItem(obj));
     if (obj == "3dWinnersData") {
       _3dWinnersFunc(retivedData);
     } else if (obj == "3dLosersData") {
@@ -337,9 +337,9 @@ $(window).on("load", function () {
     }
   }
 
-  sessionStorage.getItem("3dWinnersData") == "" ||
-  sessionStorage.getItem("3dWinnersData") == undefined ||
-  sessionStorage.getItem("3dWinnersData") == null
+  localStorage.getItem("3dWinnersData") == "" ||
+  localStorage.getItem("3dWinnersData") == undefined ||
+  localStorage.getItem("3dWinnersData") == null
     ? fetch3dWinnersData()
     : getData("3dWinnersData");
 
@@ -348,7 +348,7 @@ $(window).on("load", function () {
 
     function _3dLosersFunc (data){
       // save data in local storage
-      sessionStorage.setItem("3dLosersData", JSON.stringify(data));
+      localStorage.setItem("3dLosersData", JSON.stringify(data));
       // Create Table from Json
       $(".loading-item").removeClass("d-flex").hide();
 
@@ -388,9 +388,9 @@ $(window).on("load", function () {
   }
 
 
-  sessionStorage.getItem("3dLosersData") == "" ||
-  sessionStorage.getItem("3dLosersData") == undefined ||
-  sessionStorage.getItem("3dLosersData") == null
+  localStorage.getItem("3dLosersData") == "" ||
+  localStorage.getItem("3dLosersData") == undefined ||
+  localStorage.getItem("3dLosersData") == null
     ? fetch3dLosersData()
     : getData("3dLosersData");
 });

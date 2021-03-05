@@ -288,7 +288,7 @@ $(window).on('load', function() {
 
             function dailyWinnersFunc (data){
               // save data in local storage
-              sessionStorage.setItem("dailyWinnersData", JSON.stringify(data));
+              localStorage.setItem("dailyWinnersData", JSON.stringify(data));
 
               // Create Table from Json
               var status = "winner";
@@ -329,8 +329,8 @@ $(window).on('load', function() {
             // 
 
             function getData(obj) {
-                console.log(obj +" from inside sessionStorage");
-                var retivedData =JSON.parse(sessionStorage.getItem(obj));
+                console.log(obj +" from inside localStorage");
+                var retivedData =JSON.parse(localStorage.getItem(obj));
                 if (obj == "dailyWinnersData") {
                   dailyWinnersFunc(retivedData);
                 } else if(obj == "dailyLosersData") {
@@ -340,9 +340,9 @@ $(window).on('load', function() {
             }
 
 
-            sessionStorage.getItem("dailyWinnersData") == "" ||
-            sessionStorage.getItem("dailyWinnersData") == undefined ||
-            sessionStorage.getItem("dailyWinnersData") == null
+            localStorage.getItem("dailyWinnersData") == "" ||
+            localStorage.getItem("dailyWinnersData") == undefined ||
+            localStorage.getItem("dailyWinnersData") == null
               ? fetchDailyWinnersData()
               : getData("dailyWinnersData");
                 
@@ -361,7 +361,7 @@ $(window).on('load', function() {
 
             function dailyLosersFunc (data){
               // save data in local storage
-              sessionStorage.setItem("dailyLosersData", JSON.stringify(data));
+              localStorage.setItem("dailyLosersData", JSON.stringify(data));
 
               // Create Table from Json
               var status = "loser";
@@ -400,9 +400,9 @@ $(window).on('load', function() {
             }
 
 
-                sessionStorage.getItem("dailyLosersData") == "" ||
-                sessionStorage.getItem("dailyLosersData") == undefined ||
-                sessionStorage.getItem("dailyLosersData") == null
+                localStorage.getItem("dailyLosersData") == "" ||
+                localStorage.getItem("dailyLosersData") == undefined ||
+                localStorage.getItem("dailyLosersData") == null
                   ? fetchDailyLosersData()
                   : getData("dailyLosersData");
         })
