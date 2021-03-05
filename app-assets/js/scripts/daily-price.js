@@ -284,66 +284,127 @@ $(window).on('load', function() {
 
             // Daily Winners 
 
-            fetch('https://api.apispreadsheets.com/data/8603/')
-                .then(response => response.json())
-                .then(data => {
-                    // Create Table from Json 
-                    var status = "winner";
-                    $(".loading-item").removeClass("d-flex").hide();
 
-                    var prop = getJsonData(data, "#dailyWinners");
-                    // console.log(prop);
-                    // get best 3 cards
-                    
-                     var items = data.data.slice();
-                     console.log(items);
-                     function sortByProperty(property) {
-                       return function (a, b) {
-                         if (Number(a[property]) > Number(b[property]))
-                           return 1;
-                         else if (Number(a[property]) < Number(b[property]))
-                           return -1;
-                         return 0;
-                       };
-                     }
-                     items.sort(sortByProperty("Change"));
-                  items.reverse(sortByProperty("Change"));
 
-                    displayCards(items, "#winners_cards", 1, "text-center");
-                    createAllCharts(status);
+            function dailyWinnersFunc (data){
+              // save data in local storage
+              sessionStorage.setItem("dailyWinnersData", JSON.stringify(data));
 
-                });
+              // Create Table from Json
+              var status = "winner";
+              $(".loading-item").removeClass("d-flex").hide();
+
+              var prop = getJsonData(data, "#dailyWinners");
+              // get best 3 cards
+
+              var items = data.data.slice();
+              // console.log(items);
+              function sortByProperty(property) {
+                return function (a, b) {
+                  if (Number(a[property]) > Number(b[property])) return 1;
+                  else if (Number(a[property]) < Number(b[property])) return -1;
+                  return 0;
+                };
+              }
+
+              items.sort(sortByProperty("Change"));
+              items.reverse(sortByProperty("Change"));
+              displayCards(items, "#winners_cards", 1, "text-center");
+              createAllCharts(status);
+            }            
+
+
+
+            function fetchDailyWinnersData(){
+                fetch("https://api.apispreadsheets.com/data/8603/")
+                  .then((response) => response.json())
+                  .then((data) => {
+                        dailyWinnersFunc (data);
+                        console.log("winners from inside fetch");
+                  });
+
+
+            }
+
+            // 
+
+            function getData(obj) {
+                console.log(obj +" from inside sessionStorage");
+                var retivedData =JSON.parse(sessionStorage.getItem(obj));
+                if (obj == "dailyWinnersData") {
+                  dailyWinnersFunc(retivedData);
+                } else if(obj == "dailyLosersData") {
+                  dailyLosersFunc(retivedData);
+                } 
+              
+            }
+
+
+            sessionStorage.getItem("dailyWinnersData") == "" ||
+            sessionStorage.getItem("dailyWinnersData") == undefined ||
+            sessionStorage.getItem("dailyWinnersData") == null
+              ? fetchDailyWinnersData()
+              : getData("dailyWinnersData");
+                
+            
+            
+
+
+
+
+
 
 
             // Daily Losers
-            fetch('https://api.apispreadsheets.com/data/8602/')
+
+
+
+            function dailyLosersFunc (data){
+              // save data in local storage
+              sessionStorage.setItem("dailyLosersData", JSON.stringify(data));
+
+              // Create Table from Json
+              var status = "loser";
+              $(".loading-item").removeClass("d-flex").hide();
+
+              getJsonData(data, "#dailyLosers");
+              // get best 3 cards
+              var items = data.data.slice();
+              function sortByProperty(property) {
+                return function (a, b) {
+                  if (Number(a[property]) > Number(b[property])) {
+                    return 1;
+                  } else if (Number(a[property]) < Number(b[property])) {
+                    return -1;
+                  }
+                  return 0;
+                };
+              }
+              items.sort(sortByProperty("Change"));
+              items.reverse(sortByProperty("Change"));
+              displayCards(items, "#losers_cards", 4, "text-danger");
+              createAllCharts(status);
+            }
+
+
+
+            function fetchDailyLosersData(){
+                fetch('https://api.apispreadsheets.com/data/8602/')
                 .then(response => response.json())
                 .then(data => {
-                  // Create Table from Json
-                  var status = "loser";
-                    $(".loading-item").removeClass("d-flex").hide();
+                    dailyLosersFunc(data);
+                    console.log("losers from inside fetch");
 
-                  getJsonData(data, "#dailyLosers");
-                  // get best 3 cards
-                  var items = data.data.slice();
-                  function sortByProperty(property) {
-                    return function (a, b) {
-                      if (Number(a[property]) > Number(b[property])) {
-                        return 1;
-                      } else if (Number(a[property]) < Number(b[property])) {
-                        return -1;
-                      }
-                      return 0;
-                    };
-                  }
-                  items.sort(sortByProperty("Change"));
-                  items.reverse(sortByProperty("Change"));
-                  displayCards(items, "#losers_cards", 4, "text-danger");
-                  createAllCharts(status);
                 });
 
+            }
 
 
+                sessionStorage.getItem("dailyLosersData") == "" ||
+                sessionStorage.getItem("dailyLosersData") == undefined ||
+                sessionStorage.getItem("dailyLosersData") == null
+                  ? fetchDailyLosersData()
+                  : getData("dailyLosersData");
         })
         
         

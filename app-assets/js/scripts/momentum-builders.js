@@ -287,16 +287,71 @@ $(window).on("load", function () {
 
 
   // Momentum Builders 3D winners
-  fetch("https://api.apispreadsheets.com/data/8620/")
-    .then((response) => response.json())
-    .then((data) => {
+
+
+
+  function _3dWinnersFunc (data){
+    // save data in local storage
+    sessionStorage.setItem("3dWinnersData", JSON.stringify(data));
+
+    // Create Table from Json
+    $(".loading-item").removeClass("d-flex").hide();
+
+    var properties = getJsonData(data, "#3DWinners");
+
+    let items = data.data.slice();
+
+    function sortByProperty(property) {
+      return function (a, b) {
+        if (parseInt(a[property]) > parseInt(b[property])) return 1;
+        else if (parseInt(a[property]) < parseInt(b[property])) return -1;
+        return 0;
+      };
+    }
+
+    items.sort(sortByProperty("volume"));
+    // items.reverse(sortByProperty("volume"));
+    // console.log(items);
+
+    displayCards(items, "#winners_cards", 1, "text-center");
+    createAllCharts("winner", properties);
+  }
+
+  function fetch3dWinnersData() {
+    fetch("https://api.apispreadsheets.com/data/8620/")
+      .then((response) => response.json())
+      .then((data) => {
+        _3dWinnersFunc(data);
+         console.log("3D winners from inside fetch");
+      });
+  }
+
+
+  function getData(obj) {
+    console.log(obj + " from inside sessionStorage");
+    var retivedData = JSON.parse(sessionStorage.getItem(obj));
+    if (obj == "3dWinnersData") {
+      _3dWinnersFunc(retivedData);
+    } else if (obj == "3dLosersData") {
+      _3dLosersFunc(retivedData);
+    }
+  }
+
+  sessionStorage.getItem("3dWinnersData") == "" ||
+  sessionStorage.getItem("3dWinnersData") == undefined ||
+  sessionStorage.getItem("3dWinnersData") == null
+    ? fetch3dWinnersData()
+    : getData("3dWinnersData");
+
+
+    // 3D losers
+
+    function _3dLosersFunc (data){
+      // save data in local storage
+      sessionStorage.setItem("3dLosersData", JSON.stringify(data));
       // Create Table from Json
       $(".loading-item").removeClass("d-flex").hide();
 
-      var properties = getJsonData(data, "#3DWinners");
-      
-      let items = data.data.slice();
-      
       function sortByProperty(property) {
         return function (a, b) {
           if (parseInt(a[property]) > parseInt(b[property])) return 1;
@@ -305,44 +360,37 @@ $(window).on("load", function () {
         };
       }
 
+      var properties = getJsonData(data, "#3DLosers");
+      // get best 3 cards
+      let items = data.data.slice();
       items.sort(sortByProperty("volume"));
-      // items.reverse(sortByProperty("volume"));
+      // items.reverse();
       // console.log(items);
-      
-      displayCards(items, "#winners_cards", 1, "text-center");
-      createAllCharts("winner", properties);
 
-      
+      displayCards(items, "#losers_cards", 4, "text-danger");
+      createAllCharts("loser", properties);
+    }
 
-    });
 
 
   // Momentum Builders 3D Losers
-  fetch("https://api.apispreadsheets.com/data/8617/")
-    .then((response) => response.json())
-    .then((data) => {
-      // Create Table from Json
 
-        // Create Table from Json
-      $(".loading-item").removeClass("d-flex").hide();
+
+  function fetch3dLosersData(){
+    fetch("https://api.apispreadsheets.com/data/8617/")
+      .then((response) => response.json())
+      .then((data) => {
         
-        function sortByProperty(property) {
-          return function (a, b) {
-            if (parseInt(a[property]) > parseInt(b[property])) return 1;
-            else if (parseInt(a[property]) < parseInt(b[property])) return -1;
-            return 0;
-          };
-        }
+        _3dLosersFunc(data);
+        console.log("3d losers from inside fetch");
 
-        var properties = getJsonData(data, "#3DLosers");
-        // get best 3 cards
-        let items = data.data.slice();
-        items.sort(sortByProperty("volume"));
-        // items.reverse();
-      // console.log(items);
+      });
+  }
 
-        displayCards(items, "#losers_cards", 4, "text-danger");
-        createAllCharts("loser", properties);
-      
-    });
+
+  sessionStorage.getItem("3dLosersData") == "" ||
+  sessionStorage.getItem("3dLosersData") == undefined ||
+  sessionStorage.getItem("3dLosersData") == null
+    ? fetch3dLosersData()
+    : getData("3dLosersData");
 });

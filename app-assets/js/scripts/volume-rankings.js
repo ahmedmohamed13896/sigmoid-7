@@ -282,64 +282,59 @@ $(window).on('load', function() {
             // get data from the json link 
 
 
-            // Daily Winners 
+            // Volume ranking  
 
-            fetch("https://api.apispreadsheets.com/data/8822/")
-              .then((response) => response.json())
-              .then((data) => {
-                // Create Table from Json
-                var status = "winner";
-                $(".loading-item").removeClass("d-flex").hide();
+            function volumeRankingFunc (data){
+              // save data in local storage
+              sessionStorage.setItem("volumeRankingData", JSON.stringify(data));
+              
+              // Create Table from Json
+              var status = "winner";
+              $(".loading-item").removeClass("d-flex").hide();
 
-                var prop = getJsonData(data, "#dailyWinners");
-                // console.log(prop);
-                // get best 3 cards
+              var prop = getJsonData(data, "#dailyWinners");
+              // console.log(prop);
+              // get best 3 cards
 
-                var items = data.data.slice();
-                console.log(items);
-                function sortByProperty(property) {
-                  return function (a, b) {
-                    if (parseInt(a[property]) > parseInt(b[property])) return 1;
-                    else if (parseInt(a[property]) < parseInt(b[property]))
-                      return -1;
-                    return 0;
-                  };
-                }
-                items.sort(sortByProperty("Change"));
-                displayCards(items, "#winners_cards", 1, "text-center");
-                createAllCharts(status);
-              });
+              var items = data.data.slice();
+            //   console.log(items);
+              function sortByProperty(property) {
+                return function (a, b) {
+                  if (parseInt(a[property]) > parseInt(b[property])) return 1;
+                  else if (parseInt(a[property]) < parseInt(b[property]))
+                    return -1;
+                  return 0;
+                };
+              }
+              items.sort(sortByProperty("Change"));
+              displayCards(items, "#winners_cards", 1, "text-center");
+              createAllCharts(status);
 
-
-            // Daily Losers
-            // fetch('https://api.apispreadsheets.com/data/8602/')
-            //     .then(response => response.json())
-            //     .then(data => {
-            //       // Create Table from Json
-            //       var status = "loser";
-
-            //       getJsonData(data, "#dailyLosers");
-            //       // get best 3 cards
-            //       var items = data.data.slice();
-            //       function sortByProperty(property) {
-            //         return function (a, b) {
-            //           if (parseInt(a[property]) > parseInt(b[property])) {
-            //             return 1;
-            //           } else if (
-            //             parseInt(a[property]) < parseInt(b[property])
-            //           ) {
-            //             return -1;
-            //           }
-            //           return 0;
-            //         };
-            //       }
-            //       items.sort(sortByProperty("Change"));
-            //       items.reverse(sortByProperty("Change"));
-            //       displayCards(items, "#losers_cards", 4, "text-danger");
-            //       createAllCharts(status);
-            //     });
+            }
 
 
+            function fetchVolumeRankingData() {
+              fetch("https://api.apispreadsheets.com/data/8822/")
+                .then((response) => response.json())
+                .then((data) => {
+                    volumeRankingFunc(data);
+                    console.log("volume ranking from inside fetch");
+                });
+            }
+
+             function getData(obj) {
+               console.log(obj + " from inside sessionStorage");
+               var retivedData = JSON.parse(sessionStorage.getItem(obj));
+                 volumeRankingFunc(retivedData);
+             }
+
+             
+            sessionStorage.getItem("volumeRankingData") == "" ||
+            sessionStorage.getItem("volumeRankingData") == undefined ||
+            sessionStorage.getItem("volumeRankingData") == null
+              ? fetchVolumeRankingData()
+              : getData("volumeRankingData");
+                
 
         })
         

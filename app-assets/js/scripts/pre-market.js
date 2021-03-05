@@ -353,44 +353,76 @@ $(window).on('load', function() {
 
   //preMarketGainers
 
-  fetch(
-    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketGainers"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      // Create Table from Json
-      var status = "winner";
-      $(".loading-item").removeClass("d-flex").hide();
+   function preMarketGainersFunc(data) {
+     // save data in local storage
+     sessionStorage.setItem("preMarketGainersData", JSON.stringify(data));
 
-      var prop = getJsonData(data, "#preMarketGainers", "preMarketGainers");
-      // console.log(prop);
-      // get best 3 cards
+     // Create Table from Json
+     var status = "winner";
+     $(".loading-item").removeClass("d-flex").hide();
 
-      var items = data["preMarketGainers"].slice();
-      console.log(items);
-      function sortByProperty(property) {
-        return function (a, b) {
-          if (parseFloat(a[property]) > parseFloat(b[property])) return 1;
-          else if (parseFloat(a[property]) < parseFloat(b[property])) return -1;
-          return 0;
-        };
+     var prop = getJsonData(data, "#preMarketGainers", "preMarketGainers");
+     // console.log(prop);
+     // get best 3 cards
+
+     var items = data["preMarketGainers"].slice();
+     function sortByProperty(property) {
+       return function (a, b) {
+         if (parseFloat(a[property]) > parseFloat(b[property])) return 1;
+         else if (parseFloat(a[property]) < parseFloat(b[property])) return -1;
+         return 0;
+       };
+     }
+     items.sort(sortByProperty("premarketAdjusted"));
+     // items.reverse(sortByProperty("premarketAdjusted"));
+
+
+     displayCards(items, "#preMarketGainers_cards", 1, "text-center");
+     createAllCharts(status);
+
+   }
+
+   function fetchPreMarketGainersData(){
+     
+         fetch(
+           "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketGainers"
+         )
+         .then((response) => response.json())
+         .then((data) => {
+           preMarketGainersFunc(data); 
+           console.log("preMarketGainers from inside fetch");
+     
+         });
+   }
+
+    function getData(obj) {
+      console.log(obj + " from inside sessionStorage");
+      var retivedData = JSON.parse(sessionStorage.getItem(obj));
+      if (obj == "preMarketGainersData") {
+        preMarketGainersFunc(retivedData);
+      } else if (obj == "preMarketLaggardsData") {
+        preMarketLaggardsFunc(retivedData);
+      } else if (obj == "preMarketMostActiveData") {
+        preMarketMostActiveFunc(retivedData);
       }
-      items.sort(sortByProperty("premarketAdjusted"));
-      // items.reverse(sortByProperty("premarketAdjusted"));
+    }
 
-      console.log(items);
 
-      displayCards(items, "#preMarketGainers_cards", 1, "text-center");
-      createAllCharts(status);
-    });
+     sessionStorage.getItem("preMarketGainersData") == "" ||
+     sessionStorage.getItem("preMarketGainersData") == undefined ||
+     sessionStorage.getItem("preMarketGainersData") == null
+       ? fetchPreMarketGainersData()
+       : getData("preMarketGainersData");
+
+
+
 
   // preMarketLaggards
 
-  fetch(
-    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketLaggards"
-  )
-    .then((response) => response.json())
-    .then((data) => {
+    function preMarketLaggardsFunc (data){
+      // save data in local storage
+      sessionStorage.setItem("preMarketLaggardsData", JSON.stringify(data));
+
       // Create Table from Json
       var status = "loser";
       $(".loading-item").removeClass("d-flex").hide();
@@ -400,7 +432,7 @@ $(window).on('load', function() {
       // get best 3 cards
 
       var items = data["preMarketLaggards"].slice();
-      console.log(items);
+      
       function sortByProperty(property) {
         return function (a, b) {
           if (parseFloat(a[property]) > parseFloat(b[property])) return 1;
@@ -411,18 +443,41 @@ $(window).on('load', function() {
       items.sort(sortByProperty("premarketAdjusted"));
       items.reverse(sortByProperty("premarketAdjusted"));
 
-
       displayCards(items, "#preMarketLaggards_cards", 4, "text-danger");
       createAllCharts(status);
-    });
+    }
+
+
+
+    function fetchPreMarketLaggardsData(){
+      fetch(
+        "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketLaggards"
+      )
+      .then((response) => response.json())
+      .then((data) => {
+        preMarketLaggardsFunc(data);
+        console.log("preMarketLaggards from inside fetch");
+      });
+    }
+
+     sessionStorage.getItem("preMarketLaggardsData") == "" ||
+     sessionStorage.getItem("preMarketLaggardsData") == undefined ||
+     sessionStorage.getItem("preMarketLaggardsData") == null
+       ? fetchPreMarketLaggardsData()
+       : getData("preMarketLaggardsData");
+
+
+
+
+
+
 
   // preMarketMostActive
 
-  fetch(
-    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketMostActive"
-  )
-    .then((response) => response.json())
-    .then((data) => {
+    function preMarketMostActiveFunc (data){
+      // save data in local storage
+      sessionStorage.setItem("preMarketMostActiveData", JSON.stringify(data));
+
       // Create Table from Json
       var status = "active";
       $(".loading-item").removeClass("d-flex").hide();
@@ -436,7 +491,7 @@ $(window).on('load', function() {
       // get best 3 cards
 
       var items = data["preMarketMostActive"].slice();
-      console.log(items);
+      
       function sortByProperty(property) {
         return function (a, b) {
           if (parseFloat(a[property]) > parseFloat(b[property])) return 1;
@@ -445,13 +500,34 @@ $(window).on('load', function() {
         };
       }
       items.sort(sortByProperty("premarketChangeAdjusted"));
-    //   items.reverse(sortByProperty("premarketAdjusted"));
+      //   items.reverse(sortByProperty("premarketAdjusted"));
 
-      console.log(items);
+      
 
       displayCards(items, "#preMarketMostActive_cards", 7, "text-center act");
       createAllCharts(status);
-    });
+    }
+
+
+
+     function fetchPreMarketMostActiveData(){
+       fetch(
+         "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/preMarketMostActive"
+       )
+         .then((response) => response.json())
+         .then((data) => {
+             preMarketMostActiveFunc(data);
+             console.log("preMarketMostActive from inside fetch");
+         });
+     }
+
+       sessionStorage.getItem("preMarketMostActiveData") == "" ||
+       sessionStorage.getItem("preMarketMostActiveData") == undefined ||
+       sessionStorage.getItem("preMarketMostActiveData") == null
+         ? fetchPreMarketMostActiveData()
+         : getData("preMarketMostActiveData");
+
+
 })
         
         

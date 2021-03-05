@@ -363,9 +363,9 @@ var isRtl = $("html").attr("data-textdirection") === "rtl",
   )
     .then((response) => response.json())
     .then((data) => {
-      $(".loading-item").removeClass("d-flex").hide();
       //  console.log(data);
       getNewsData(data.news, "#news_cards");
+      $(".loading-item").removeClass("d-flex").hide();
     })
     .catch((error) => console.log(error));
 
@@ -376,9 +376,9 @@ var isRtl = $("html").attr("data-textdirection") === "rtl",
    )
      .then((response) => response.json())
      .then((data) => {
-       $(".loading-item").removeClass("d-flex").hide();
        // console.log(data);
        getLineAreaChartData(data.revenue, "#revenue_chart");
+       $(".loading-item").removeClass("d-flex").hide();
      })
      .catch((error) => console.log(error));
 
@@ -388,9 +388,9 @@ var isRtl = $("html").attr("data-textdirection") === "rtl",
     )
       .then((response) => response.json())
       .then((data) => {
-        $(".loading-item").removeClass("d-flex").hide();
         // console.log(data);
         getLineAreaChartData(data.liquidity, "#liquidity_chart");
+        $(".loading-item").removeClass("d-flex").hide();
       })
       .catch((error) => console.log(error));
 
@@ -402,9 +402,9 @@ var isRtl = $("html").attr("data-textdirection") === "rtl",
     )
       .then((response) => response.json())
       .then((data) => {
-        $(".loading-item").removeClass("d-flex").hide();
         // console.log(data);
         getLineChartData(data.price, "#price_chart");
+        $(".loading-item").removeClass("d-flex").hide();
       })
       .catch((error) => console.log(error));
 

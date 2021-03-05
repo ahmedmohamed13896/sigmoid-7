@@ -82,11 +82,9 @@ $(window).on('load', function() {
     return properties;
   }
 
-
   // display cards
 
   function displayCards(data, cardsID, cardNumber, className) {
-    
     let html = `<div class="card-body statistics-body" >
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 my-2">
@@ -314,64 +312,66 @@ $(window).on('load', function() {
 
   // get data from the json link
 
-  // sectoial momentum
+  // sectorPerformance
 
-  fetch(
-    "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/sectorPerformance"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      // Create Table from Json
-      var status = "winner";
-      $(".loading-item").removeClass("d-flex").hide();
 
-      var prop = getJsonData(data, "#weeklyWinners");
-      // console.log(prop);
+  function sectorPerformanceFunc(data){
+    // save data in local storage
+    sessionStorage.setItem("sectorPerformanceData", JSON.stringify(data));
 
-      var items = data.sectorPerformance.slice();
-      console.log(items);
-      function sortByProperty(property) {
-        return function (a, b) {
-          if (parseInt(a[property]) > parseInt(b[property])) return 1;
-          else if (parseInt(a[property]) < parseInt(b[property])) return -1;
-          return 0;
-        };
-      }
-      items.sort(sortByProperty("change"));
-      items.reverse(sortByProperty("change"));
 
-      displayCards(items, "#winners_cards", 1, "text-center");
-      createAllCharts(status);
-    });
+    // Create Table from Json
+    var status = "winner";
+    $(".loading-item").removeClass("d-flex").hide();
 
-  // Weekly Losers
-  // fetch("https://api.apispreadsheets.com/data/8818/")
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     // Create Table from Json
-  //     var status = "loser";
+    getJsonData(data, "#sectorPerformance");
+    // console.log(prop);
 
-  //     $(".loading-item").removeClass("d-flex").hide();
+    var items = data.sectorPerformance.slice();
+    // console.log(items);
+    function sortByProperty(property) {
+      return function (a, b) {
+        if (parseInt(a[property]) > parseInt(b[property])) return 1;
+        else if (parseInt(a[property]) < parseInt(b[property])) return -1;
+        return 0;
+      };
+    }
+    items.sort(sortByProperty("change"));
+    items.reverse(sortByProperty("change"));
 
-  //     getJsonData(data, "#weeklyLosers");
-  //     // get best 3 cards
-  //     var items = data.sectorPerformance.slice();
-  //     function sortByProperty(property) {
-  //       return function (a, b) {
-  //         if (parseInt(a[property]) > parseInt(b[property])) {
-  //           return 1;
-  //         }
-  //         else if (parseInt(a[property]) < parseInt(b[property])){
-  //           return -1;
-  //         } 
-  //         return 0;
-  //       };
-  //     }
-  //     items.sort(sortByProperty("Change"));
-  //     items.reverse(sortByProperty("Change"));
-  //     displayCards(items, "#losers_cards", 4, "text-danger");
-  //     createAllCharts(status);
-  //   });
+    displayCards(items, "#sectorPerformance_cards", 1, "text-center");
+    createAllCharts(status);
+  };
+
+
+  function fetchSectorPerformanceData() {
+    fetch(
+      "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/sectorPerformance"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        sectorPerformanceFunc(data);
+        console.log("winners from inside fetch");
+      });
+  }
+
+ 
+
+
+
+
+    function getData(obj) {
+      console.log(obj + " from inside sessionStorage");
+      var retivedData = JSON.parse(sessionStorage.getItem(obj));
+        sectorPerformanceFunc(retivedData);
+    }
+
+    sessionStorage.getItem("sectorPerformanceData") == "" ||
+    sessionStorage.getItem("sectorPerformanceData") == undefined ||
+    sessionStorage.getItem("sectorPerformanceData") == null
+      ? fetchSectorPerformanceData()
+      : getData("sectorPerformanceData");
+
 })
         
         

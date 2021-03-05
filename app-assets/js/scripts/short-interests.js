@@ -291,42 +291,58 @@ $(window).on('load', function() {
             // get data from the json link 
 
 
-            // Daily Winners 
+            // shortInterest
 
+
+
+            function shortInterestFunc (data){
+              // save data in local storage
+              sessionStorage.setItem("shortInterestData", JSON.stringify(data));
+              // Create Table from Json
+              var status = "winner";
+              $(".loading-item").removeClass("d-flex").hide();
+
+              var prop = getJsonData(data, "#shortInterest");
+              // console.log(prop);
+              // get best 3 cards
+
+              var items = data.shortInterest.slice();
+
+              function sortByProperty(property) {
+                return function (a, b) {
+                  if (Number(a[property]) > Number(b[property])) return 1;
+                  else if (Number(a[property]) < Number(b[property])) return -1;
+                  return 0;
+                };
+              }
+              items.sort(sortByProperty("change"));
+              //  items.sort(sortByProperty("change"));
+            //   console.log(items);
+
+              displayCards(items, "#shortInterest_cards", 1, "text-center");
+              createAllCharts(status);
+            }
+
+
+            function fetchShortInterestData(){
             fetch('https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/shortInterest')
                 .then(response => response.json())
                 .then(data => {
-                    // Create Table from Json 
-                    var status = "winner";
-                    $(".loading-item").removeClass("d-flex").hide();
-
-                    var prop = getJsonData(data, "#dailyWinners");
-                    // console.log(prop);
-                    // get best 3 cards
-                    
-                     var items = data.shortInterest.slice();
-                     
-                     function sortByProperty(property) {
-                       return function (a, b) {
-                         if (Number(a[property]) > Number(b[property]))
-                           return 1;
-                         else if (Number(a[property]) < Number(b[property]))
-                           return -1;
-                         return 0;
-                       };
-                     }
-                     items.sort(sortByProperty("change"));
-                    //  items.sort(sortByProperty("change"));
-                    console.log(items);
-
-                    displayCards(items, "#winners_cards", 1, "text-center");
-                    createAllCharts(status);
-
+                   shortInterestFunc(data);
+                   console.log("shortInterest from inside fetch");
                 });
+            }
+            function getData(obj) {
+              console.log(obj + " from inside sessionStorage");
+              var retivedData = JSON.parse(sessionStorage.getItem(obj));
+                shortInterestFunc(retivedData);
+            }
 
-
-           
-
+              sessionStorage.getItem("shortInterestData") == "" ||
+              sessionStorage.getItem("shortInterestData") == undefined ||
+              sessionStorage.getItem("shortInterestData") == null
+                ? fetchShortInterestData()
+                : getData("shortInterestData");
 
 
         })

@@ -292,41 +292,65 @@ $(window).on('load', function() {
 
 
 
-            // Daily Winners 
+            // overBought 
+            function overBoughtFunc (data){
+              // save data in local storage
+              sessionStorage.setItem("overBoughtData", JSON.stringify(data));
 
-            fetch(
-              "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/overBought"
-            )
-              .then((response) => response.json())
-              .then((data) => {
-                // Create Table from Json
-                var status = "winner";
-                $(".loading-item").removeClass("d-flex").hide();
+              // Create Table from Json
+              var status = "winner";
+              $(".loading-item").removeClass("d-flex").hide();
 
-                var prop = getJsonData(data, "#dailyWinners");
-                // console.log(prop);
-                // get best 3 cards
+              var prop = getJsonData(data, "#overBought");
+              // console.log(prop);
+              // get best 3 cards
 
-                var items = data.overBought.slice();
+              var items = data.overBought.slice();
 
-                function sortByProperty(property) {
-                  return function (a, b) {
-                    if (Number(a[property]) > Number(b[property])) return 1;
-                    else if (Number(a[property]) < Number(b[property]))
-                      return -1;
-                    return 0;
-                  };
-                }
-                items.sort(sortByProperty("change"));
-                //  items.sort(sortByProperty("change"));
-                console.log(items);
+              function sortByProperty(property) {
+                return function (a, b) {
+                  if (Number(a[property]) > Number(b[property])) return 1;
+                  else if (Number(a[property]) < Number(b[property])) return -1;
+                  return 0;
+                };
+              }
+              items.sort(sortByProperty("change"));
+              //  items.sort(sortByProperty("change"));
+              console.log(items);
 
-                displayCards(items, "#winners_cards", 1, "text-center");
-                createAllCharts(status);
-              });
+              displayCards(items, "#overBought_cards", 1, "text-center");
+              createAllCharts(status);
+            }
 
 
-           
+
+
+
+            function fetchOverBoughtData(){
+                fetch(
+                  "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/overBought"
+                )
+                  .then((response) => response.json())
+                  .then((data) => {
+                    overBoughtFunc(data);
+                    console.log("overBought from inside fetch");
+                  });
+
+            }
+
+            
+              function getData(obj) {
+                console.log(obj + " from inside sessionStorage");
+                var retivedData = JSON.parse(sessionStorage.getItem(obj));
+                  overBoughtFunc(retivedData);                
+              }
+              
+
+               sessionStorage.getItem("overBoughtData") == "" ||
+               sessionStorage.getItem("overBoughtData") == undefined ||
+               sessionStorage.getItem("overBoughtData") == null
+                 ? fetchOverBoughtData()
+                 : getData("overBoughtData");        
 
 
 

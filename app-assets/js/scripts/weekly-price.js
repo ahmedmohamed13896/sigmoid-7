@@ -321,61 +321,116 @@ $(window).on('load', function() {
 
   // Weekly Winners
 
-  fetch("https://api.apispreadsheets.com/data/8817/")
-    .then((response) => response.json())
-    .then((data) => {
-      // Create Table from Json
-      var status = "winner";
-                $(".loading-item").removeClass("d-flex").hide();
 
-      var prop = getJsonData(data, "#weeklyWinners");
-      // console.log(prop);
-      
-      var items = data.data.slice();
-      console.log(items);
-      function sortByProperty(property) {
-        
-        return function (a, b) {
-          if (parseInt(a[property]) > parseInt(b[property])) return 1;
-          else if (parseInt(a[property]) < parseInt(b[property])) return -1;
-          return 0;
-        };
-      }
-      items.sort(sortByProperty("Change"));
-      // items.reverse(sortByProperty("Change"));
+  function weeklyWinnersFunc (data){
+    // save data in local storage
+    sessionStorage.setItem("weeklyWinnersData", JSON.stringify(data));
+    // Create Table from Json
+    var status = "winner";
+    $(".loading-item").removeClass("d-flex").hide();
 
-      displayCards(items, "#winners_cards", 1, "text-center");
-      createAllCharts(status);
-    });
+    getJsonData(data, "#weeklyWinners");
+    // console.log(prop);
+
+    var items = data.data.slice();
+    // console.log(items);
+    function sortByProperty(property) {
+      return function (a, b) {
+        if (parseInt(a[property]) > parseInt(b[property])) return 1;
+        else if (parseInt(a[property]) < parseInt(b[property])) return -1;
+        return 0;
+      };
+    }
+    items.sort(sortByProperty("Change"));
+    // items.reverse(sortByProperty("Change"));
+
+    displayCards(items, "#winners_cards", 1, "text-center");
+    createAllCharts(status);
+
+  }
+
+  function fetchWeeklyWinnersData(){
+    fetch("https://api.apispreadsheets.com/data/8817/")
+      .then((response) => response.json())
+      .then((data) => {
+        weeklyWinnersFunc(data);
+        console.log("winners from inside fetch");
+      });
+
+  }
+
+   function getData(obj) {
+     console.log(obj + " from inside sessionStorage");
+     var retivedData = JSON.parse(sessionStorage.getItem(obj));
+     if (obj == "weeklyWinnersData") {
+       weeklyWinnersFunc(retivedData);
+     } else if (obj == "weeklyLosersData") {
+       weeklyLosersFunc(retivedData);
+     }
+   }
+
+
+    sessionStorage.getItem("weeklyWinnersData") == "" ||
+    sessionStorage.getItem("weeklyWinnersData") == undefined ||
+    sessionStorage.getItem("weeklyWinnersData") == null
+      ? fetchWeeklyWinnersData()
+      : getData("weeklyWinnersData");
+                
+
+
+
+
+
 
   // Weekly Losers
-  fetch("https://api.apispreadsheets.com/data/8818/")
-    .then((response) => response.json())
-    .then((data) => {
-      // Create Table from Json
-      var status = "loser";
 
-      $(".loading-item").removeClass("d-flex").hide();
 
-      getJsonData(data, "#weeklyLosers");
-      // get best 3 cards
-      var items = data.data.slice();
-      function sortByProperty(property) {
-        return function (a, b) {
-          if (parseInt(a[property]) > parseInt(b[property])) {
-            return 1;
-          }
-          else if (parseInt(a[property]) < parseInt(b[property])){
-            return -1;
-          } 
-          return 0;
-        };
-      }
-      items.sort(sortByProperty("Change"));
-      items.reverse(sortByProperty("Change"));
-      displayCards(items, "#losers_cards", 4, "text-danger");
-      createAllCharts(status);
-    });
+ function weeklyLosersFunc (data){
+   // save data in local storage
+   sessionStorage.setItem("weeklyLosersData", JSON.stringify(data));
+
+   // Create Table from Json
+   var status = "loser";
+
+   $(".loading-item").removeClass("d-flex").hide();
+
+   getJsonData(data, "#weeklyLosers");
+   // get best 3 cards
+   var items = data.data.slice();
+   function sortByProperty(property) {
+     return function (a, b) {
+       if (parseInt(a[property]) > parseInt(b[property])) {
+         return 1;
+       } else if (parseInt(a[property]) < parseInt(b[property])) {
+         return -1;
+       }
+       return 0;
+     };
+   }
+   items.sort(sortByProperty("Change"));
+   items.reverse(sortByProperty("Change"));
+   displayCards(items, "#losers_cards", 4, "text-danger");
+   createAllCharts(status);
+
+ }
+
+
+  function fetchWeeklyLosersData(){
+    fetch("https://api.apispreadsheets.com/data/8818/")
+      .then((response) => response.json())
+      .then((data) => {
+        weeklyLosersFunc(data);
+        console.log("losers from inside fetch");
+      });
+  }
+
+
+      sessionStorage.getItem("weeklyLosersData") == "" ||
+      sessionStorage.getItem("weeklyLosersData") == undefined ||
+      sessionStorage.getItem("weeklyLosersData") == null
+        ? fetchWeeklyLosersData()
+        : getData("weeklyLosersData");
+
 })
         
         

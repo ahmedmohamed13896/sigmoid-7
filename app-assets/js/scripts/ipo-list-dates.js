@@ -1,97 +1,81 @@
 $(window).on('load', function() {
-            if (feather) {
-                feather.replace({
-                    width: 14,
-                    height: 14
-                });
-            }
-           //------------ Statistics Line Chart ------------
-            //-----------------------------------------------
-            
+  if (feather) {
+    feather.replace({
+      width: 14,
+      height: 14,
+    });
+  }
+  //------------ Statistics Line Chart ------------
+  //-----------------------------------------------
 
-            function numberWithCommas(x) {
-                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
-            
+  function getJsonData(data, elementID) {
+    let properties = [];
+    let tableBody = "";
 
-            function getJsonData(data, elementID) {
-
-                let properties = [];
-                let tableBody = "";
-
-                let dataHTML = `
+    let dataHTML = `
                     <thead>
                         <tr>`;
 
-                // store data properties 
-                for (let i in data.usIpOs[0]) {
-                  if (
-                    i != "id" &&
-                    i != "No." &&
-                    i != "No" &&
-                    i != "Industry" &&
-                    i != "Country" &&
-                    i != "P/E" &&
-                    i != "Id"
-                  ) {
-                    properties.push(i);
-                    dataHTML += `<th>${i}</th>`;
-                  }
-                }
+    // store data properties
+    for (let i in data.usIpOs[0]) {
+      if (
+        i != "id" &&
+        i != "No." &&
+        i != "No" &&
+        i != "Industry" &&
+        i != "Country" &&
+        i != "P/E" &&
+        i != "Id"
+      ) {
+        properties.push(i);
+        dataHTML += `<th>${i}</th>`;
+      }
+    }
 
-                dataHTML += `</tr>
+    dataHTML += `</tr>
                     </thead>
                     <tbody>`;
 
-
-
-
-                $.each(data.usIpOs, function (key, value) {
-                  tableBody += `
+    $.each(data.usIpOs, function (key, value) {
+      tableBody += `
                         <tr>`;
-                  for (let i = 0; i < properties.length; i++) {
-                    if (
-                      i != "id"&&
-                      i != "No." &&
-                      i != "No" &&
-                      i != "Industry" &&
-                      i != "Country" &&
-                      i != "P/E" &&
-                      i != "Id"
-                    ) {
-                      if (value[properties[i]][0] == "-") {
-                        tableBody += `<td class="text-danger">${
-                          value[properties[i]]
-                        }</td>`;
-                      } else if (value[properties[i]] == "") {
-                        tableBody += `<td>${numberWithCommas(
-                          value[properties[i]]
-                        )}</td>`;
-                      } else if (value[properties[i]]) {
-                        tableBody += `<td>${value[properties[i]]}</td>`;
-                      }
-                    }
-                  }
-                  tableBody += `
+      for (let i = 0; i < properties.length; i++) {
+        if (
+          i != "id" &&
+          i != "No." &&
+          i != "No" &&
+          i != "Industry" &&
+          i != "Country" &&
+          i != "P/E" &&
+          i != "Id"
+        ) {
+          if (value[properties[i]][0] == "-") {
+            tableBody += `<td class="text-danger">${value[properties[i]]}</td>`;
+          } else if (value[properties[i]] == "") {
+            tableBody += `<td>${numberWithCommas(value[properties[i]])}</td>`;
+          } else if (value[properties[i]]) {
+            tableBody += `<td>${value[properties[i]]}</td>`;
+          }
+        }
+      }
+      tableBody += `
                            </tr>`;
-                });
-                tableBody += `</tbody>`;
-                dataHTML += tableBody;
-                $(elementID).append(dataHTML);
+    });
+    tableBody += `</tbody>`;
+    dataHTML += tableBody;
+    $(elementID).append(dataHTML);
 
-                return properties;
-            }
+    return properties;
+  }
 
-            
-            
+  // display cards
 
-            // display cards
-
-            function displayCards(data, cardsID) {
-        
-
-            let html = `
+  function displayCards(data, cardsID) {
+    let html = `
             <div class="card-body statistics-body" >
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12 col-12 my-2">
@@ -230,74 +214,68 @@ $(window).on('load', function() {
                
             `;
 
-                $(cardsID).append(html);
-            }
+    $(cardsID).append(html);
+  }
+
+  // get data from the json link
+
+  // usIpOs
+
+
+
+
+  function usIpOsFunc (data){
+    // save data in local storage
+    sessionStorage.setItem("usIpOsData", JSON.stringify(data));
+
+
+    // Create Table from Json
+
+    getJsonData(data, "#usIpOs");
+    // console.log(prop);
+    // get best 3 cards
+
+    var items = data.usIpOs.slice();
+    console.log(items);
+    function sortByProperty(property) {
+      return function (a, b) {
+        if (parseInt(a[property]) > parseInt(b[property])) return 1;
+        else if (parseInt(a[property]) < parseInt(b[property])) return -1;
+        return 0;
+      };
+    }
+    items.sort(sortByProperty("shares"));
+
+    $(".loading-item").removeClass("d-flex").hide();
+    displayCards(items, "#usIpOs_cards");
+  }
+
+
+  function fetchUsIpOsData(){
+    fetch("https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/usIpOs")
+      .then((response) => response.json())
+      .then((data) => {
+        usIpOsFunc(data);
+        console.log("usIpOs from inside fetch");
+      });
+  }
+  function getData(obj) {
+    console.log(obj + " from inside sessionStorage");
+    var retivedData = JSON.parse(sessionStorage.getItem(obj));
+      dailyLosersFunc(retivedData);
+  }
+
+   sessionStorage.getItem("usIpOsData") == "" ||
+   sessionStorage.getItem("usIpOsData") == undefined ||
+   sessionStorage.getItem("usIpOsData") == null
+     ? fetchUsIpOsData()
+     : getData("usIpOsData");
 
 
 
 
 
-            // get data from the json link 
 
-
-            // Daily Winners 
-
-            fetch("https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/usIpOs")
-              .then((response) => response.json())
-              .then((data) => {
-                // Create Table from Json
-                var status = "winner";
-                var prop = getJsonData(data, "#dailyWinners");
-                // console.log(prop);
-                // get best 3 cards
-
-                var items = data.usIpOs.slice();
-                console.log(items);
-                function sortByProperty(property) {
-                  return function (a, b) {
-                    if (parseInt(a[property]) > parseInt(b[property])) return 1;
-                    else if (parseInt(a[property]) < parseInt(b[property]))
-                      return -1;
-                    return 0;
-                  };
-                }
-                items.sort(sortByProperty("shares"));
-
-                $(".loading-item").removeClass("d-flex").hide();
-                displayCards(items, "#winners_cards");
-              });
-
-
-            // Daily Losers
-            // fetch('https://api.apispreadsheets.com/data/8602/')
-            //     .then(response => response.json())
-            //     .then(data => {
-            //       // Create Table from Json
-            //       var status = "loser";
-
-            //       getJsonData(data, "#dailyLosers");
-            //       // get best 3 cards
-            //       var items = data.data.slice();
-            //       function sortByProperty(property) {
-            //         return function (a, b) {
-            //           if (parseInt(a[property]) > parseInt(b[property])) {
-            //             return 1;
-            //           } else if (
-            //             parseInt(a[property]) < parseInt(b[property])
-            //           ) {
-            //             return -1;
-            //           }
-            //           return 0;
-            //         };
-            //       }
-            //       items.sort(sortByProperty("Change"));
-            //       items.reverse(sortByProperty("Change"));
-            //       displayCards(items, "#losers_cards", 4, "text-danger");
-            //       createAllCharts(status);
-            //     });
-
-
-
-        })
+})
         
         
