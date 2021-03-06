@@ -32,7 +32,7 @@ $(window).on('load', function() {
 
   function getNewsData(data, elementID) {
     let dataHTML = `<div class="card-body"><ul class="timeline">`;
-
+      
     for (let i = 0; i < data.length; i++) {
       dataHTML += `<li class="timeline-item">
         <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
@@ -415,7 +415,7 @@ $(window).on('load', function() {
       .then((response) => response.json())
       .then((data) => {
         newsFunc(data);
-        console.log(data);
+        // console.log(data);
         console.log("news from inside fetch");
       })
       .catch((error) => console.log(error));
@@ -423,7 +423,8 @@ $(window).on('load', function() {
 
   localStorage.getItem("newsData") == "" ||
   localStorage.getItem("newsData") == undefined ||
-  localStorage.getItem("newsData") == null
+  localStorage.getItem("newsData") == null ||
+  localStorage.getItem("newsData") == []
     ? fetchNewsData()
     : getData("newsData");
 
