@@ -8,41 +8,32 @@ $(window).on('load', function() {
   //------------ Statistics Line Chart ------------
   //-----------------------------------------------
 
+  // News table
 
-  
+  // function getText() {
+  //   // read text from URL location
+  //   var request = new XMLHttpRequest();
+  //   request.open("GET", "https://sparticus.xyz/newsscan/index.php?quote=DDD", true);
+  //   request.send(null);
+  //   request.onreadystatechange = function () {
+  //     if (request.readyState === 4 && request.status === 200) {
+  //       var type = request.getResponseHeader("Content-Type");
+  //       if (type.indexOf("text") !== 1) {
+  //         return request.responseText;
+  //       }
+  //     }
+  //   };
+  // }
+  // var storedText = getText();
 
-// News table
+  // console.log(
+  //   storedText
+  // );
 
-// function getText() {
-//   // read text from URL location
-//   var request = new XMLHttpRequest();
-//   request.open("GET", "https://sparticus.xyz/newsscan/index.php?quote=DDD", true);
-//   request.send(null);
-//   request.onreadystatechange = function () {
-//     if (request.readyState === 4 && request.status === 200) {
-//       var type = request.getResponseHeader("Content-Type");
-//       if (type.indexOf("text") !== 1) {
-//         return request.responseText;
-//       }
-//     }
-//   };
-// }
-// var storedText = getText();
+  function getNewsData(data, elementID) {
+    let dataHTML = `<div class="card-body"><ul class="timeline">`;
 
-// console.log(
-//   storedText
-// );
-
-
-
-
-
-
-
- function getNewsData(data, elementID) {
-   let dataHTML = `<div class="card-body"><ul class="timeline">`;
-                        
-   for(let i=0; i< data.length;i++){
+    for (let i = 0; i < data.length; i++) {
       dataHTML += `<li class="timeline-item">
         <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
           <div class="timeline-event">
@@ -55,363 +46,404 @@ $(window).on('load', function() {
                   <div class="avatar">
                       <img src="app-assets/images/avatars/12-small.png" alt="avatar" height="38" width="38" />
                   </div>
-                  <div class="media-body ml-50">
-                      <h6 class="mb-0">${data[i].percentage}</h6>
-                  </div>
               </div>
           </div>
       </li>`;
-   }
-          
-  dataHTML += `</ul></div>`;   
-   $(elementID).append(dataHTML);
+    }
 
- }
+    dataHTML += `</ul></div>`;
+    $(elementID).append(dataHTML);
+  }
 
-var isRtl = $("html").attr("data-textdirection") === "rtl",
-  chartColors = {
-    column: {
-      series1: "#826af9",
-      series2: "#d2b0ff",
-      bg: "#f8d3ff",
-    },
-    success: {
-      shade_100: "#7eefc7",
-      shade_200: "#06774f",
-    },
-    donut: {
-      series1: "#ffe700",
-      series2: "#00d4bd",
-      series3: "#826bf8",
-      series4: "#2b9bf4",
-      series5: "#FFA1A1",
-    },
-    area: {
-      series3: "#a4f8cd",
-      series2: "#60f2ca",
-      series1: "#2bdac7",
-    },
-  };
-
-
+  var isRtl = $("html").attr("data-textdirection") === "rtl",
+    chartColors = {
+      column: {
+        series1: "#826af9",
+        series2: "#d2b0ff",
+        bg: "#f8d3ff",
+      },
+      success: {
+        shade_100: "#7eefc7",
+        shade_200: "#06774f",
+      },
+      donut: {
+        series1: "#ffe700",
+        series2: "#00d4bd",
+        series3: "#826bf8",
+        series4: "#2b9bf4",
+        series5: "#FFA1A1",
+      },
+      area: {
+        series3: "#a4f8cd",
+        series2: "#60f2ca",
+        series1: "#2bdac7",
+      },
+    };
 
   // Line charts
 
-
- function getLineChartData(data, elementID) {
-      var lineChartEl = document.querySelector(elementID),
-        lineChartConfig = {
-          chart: {
-            height: 400,
-            type: "line",
-            zoom: {
-              enabled: false,
-            },
-            parentHeightOffset: 0,
-            toolbar: {
-              show: false,
-            },
-          },
-          series: [
-            {
-              data: [
-                280,
-                200,
-                220,
-                180,
-                270,
-                250,
-                70,
-                90,
-                200,
-                150,
-                160,
-                100,
-                150,
-                100,
-                50,
-              ],
-            },
-          ],
-          markers: {
-            strokeWidth: 7,
-            strokeOpacity: 1,
-            strokeColors: [window.colors.solid.white],
-            colors: [window.colors.solid.warning],
-          },
-          dataLabels: {
+  function getLineChartData(data, elementID) {
+    var lineChartEl = document.querySelector(elementID),
+      lineChartConfig = {
+        chart: {
+          height: 400,
+          type: "line",
+          zoom: {
             enabled: false,
           },
-          stroke: {
-            curve: "straight",
+          parentHeightOffset: 0,
+          toolbar: {
+            show: false,
           },
-          colors: [window.colors.solid.warning],
-          grid: {
-            xaxis: {
-              lines: {
-                show: true,
-              },
-            },
-            padding: {
-              top: -20,
-            },
-          },
-          tooltip: {
-            custom: function (data) {
-              return (
-                '<div class="px-1 py-50">' +
-                "<span>" +
-                data.series[data.seriesIndex][data.dataPointIndex] +
-                "%</span>" +
-                "</div>"
-              );
-            },
-          },
-          xaxis: {
-            categories: [
-              "7/12",
-              "8/12",
-              "9/12",
-              "10/12",
-              "11/12",
-              "12/12",
-              "13/12",
-              "14/12",
-              "15/12",
-              "16/12",
-              "17/12",
-              "18/12",
-              "19/12",
-              "20/12",
-              "21/12",
+        },
+        series: [
+          {
+            data: [
+              280,
+              200,
+              220,
+              180,
+              270,
+              250,
+              70,
+              90,
+              200,
+              150,
+              160,
+              100,
+              150,
+              100,
+              50,
             ],
           },
-          yaxis: {
-            opposite: isRtl,
+        ],
+        markers: {
+          strokeWidth: 7,
+          strokeOpacity: 1,
+          strokeColors: [window.colors.solid.white],
+          colors: [window.colors.solid.warning],
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "straight",
+        },
+        colors: [window.colors.solid.warning],
+        grid: {
+          xaxis: {
+            lines: {
+              show: true,
+            },
           },
-        };
-      if (typeof lineChartEl !== undefined && lineChartEl !== null) {
-        var lineChart = new ApexCharts(lineChartEl, lineChartConfig);
-        lineChart.render();
-      }
-};
-
-
-
-
-
-
-
-
-
-
-
-
+          padding: {
+            top: -20,
+          },
+        },
+        tooltip: {
+          custom: function (data) {
+            return (
+              '<div class="px-1 py-50">' +
+              "<span>" +
+              data.series[data.seriesIndex][data.dataPointIndex] +
+              "%</span>" +
+              "</div>"
+            );
+          },
+        },
+        xaxis: {
+          categories: [
+            "7/12",
+            "8/12",
+            "9/12",
+            "10/12",
+            "11/12",
+            "12/12",
+            "13/12",
+            "14/12",
+            "15/12",
+            "16/12",
+            "17/12",
+            "18/12",
+            "19/12",
+            "20/12",
+            "21/12",
+          ],
+        },
+        yaxis: {
+          opposite: isRtl,
+        },
+      };
+    if (typeof lineChartEl !== undefined && lineChartEl !== null) {
+      var lineChart = new ApexCharts(lineChartEl, lineChartConfig);
+      lineChart.render();
+    }
+  }
 
   // lineArea charts
 
+  var itemLabel = 0;
 
-  var itemLabel=0;
+  function getLineAreaChartData(data, elementID) {
+    let lineObjects = [
+      "Revenue",
+      "Netincome ",
+      "Grossprofitratio",
+      "Volume",
+      "Relative Vol",
+      "Avg Vol",
+    ];
 
- function getLineAreaChartData(data, elementID) {
+    let storedData = {
+      storeRevenue: [],
+      storeNetincome: [],
+      Grossprofitratio: [],
+      storeAbsoluteVol: [],
+      storeRelativeVol: [],
+      storeAverageVol: [],
+    };
 
-  let lineObjects = [
-    "Revenue",
-    "Net Income",
-    "Gross Profit Margin",
-    "Volume",
-    "Relative Vol",
-    "Avg Vol",
-  ];
-
-
-  let storeRevenue = [],
-    storeNetincome = [],
-    Grossprofitratio = []; 
-
-
-    for(let i in data){
-      console.log(data[i]);
-      // if(data[i] == "");
+    for (let i in data) {
+      if (elementID == "#revenue_chart") {
+        if (data[i]["revenue1QValue"].search("Revenue") !== -1) {
+          storedData.storeRevenue.push(data[i]);
+        } else if (data[i]["revenue1QValue"].search("Netincome") !== -1) {
+          storedData.storeNetincome.push(data[i]);
+        } else if (
+          data[i]["revenue1QValue"].search("Grossprofitratio") !== -1
+        ) {
+          storedData.Grossprofitratio.push(data[i]);
+        }
+      } else if (elementID == "#liquidity_chart") {
+        if (data[i]["absoluteVol1DaysValue"].search("Absolute") !== -1) {
+          storedData.storeAbsoluteVol.push(data[i]);
+        } else if (data[i]["absoluteVol1DaysValue"].search("Relative") !== -1) {
+          storedData.storeRelativeVol.push(data[i]);
+        } else if (data[i]["absoluteVol1DaysValue"].search("Average") !== -1) {
+          storedData.storeAverageVol.push(data[i]);
+        }
+      }
     }
-    // for (el in data["revenue1QValue"]){
-      
-    // }
-      
-    
+    console.log(storedData);
+
     var areaChartEl = document.querySelector(elementID),
-        areaChartConfig = {
-          chart: {
-            height: 400,
-            type: "area",
-            parentHeightOffset: 0,
-            toolbar: {
-              show: false,
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          stroke: {
+      areaChartConfig = {
+        chart: {
+          height: 400,
+          type: "area",
+          parentHeightOffset: 0,
+          toolbar: {
             show: false,
-            curve: "straight",
           },
-          legend: {
-            show: true,
-            position: "top",
-            horizontalAlign: "start",
-          },
-          grid: {
-            xaxis: {
-              lines: {
-                show: true,
-              },
-            },
-          },
-          colors: [
-            chartColors.area.series3,
-            chartColors.area.series2,
-            chartColors.area.series1,
-          ],
-          series: [
-            {
-              name: `${lineObjects[itemLabel++]}`,
-              data: [
-                100,
-                120,
-                90,
-                170,
-                130,
-                160,
-                140,
-                240,
-                220,
-                180,
-                270,
-                280,
-                375,
-              ],
-            },
-            {
-              name: `${lineObjects[itemLabel++]}`,
-              data: [
-                60,
-                80,
-                70,
-                110,
-                80,
-                100,
-                90,
-                180,
-                160,
-                140,
-                200,
-                220,
-                275,
-              ],
-            },
-            {
-              name: `${lineObjects[itemLabel++]}`,
-              data: [20, 40, 30, 70, 40, 60, 50, 140, 120, 100, 140, 180, 220],
-            },
-          ],
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          show: false,
+          curve: "straight",
+        },
+        legend: {
+          show: true,
+          position: "top",
+          horizontalAlign: "start",
+        },
+        grid: {
           xaxis: {
-            categories: [
-              "7/12",
-              "8/12",
-              "9/12",
-              "10/12",
-              "11/12",
-              "12/12",
-              "13/12",
-              "14/12",
-              "15/12",
-              "16/12",
-              "17/12",
-              "18/12",
-              "19/12",
-              "20/12",
+            lines: {
+              show: true,
+            },
+          },
+        },
+        colors: [
+          chartColors.area.series3,
+          chartColors.area.series2,
+          chartColors.area.series1,
+        ],
+        series: [
+          {
+            name: `${lineObjects[itemLabel++]}`,
+            data: [
+              100,
+              120,
+              90,
+              170,
+              130,
+              160,
+              140,
+              240,
+              220,
+              180,
+              270,
+              280,
+              375,
             ],
           },
-          fill: {
-            opacity: 1,
-            type: "solid",
+          {
+            name: `${lineObjects[itemLabel++]}`,
+            data: [60, 80, 70, 110, 80, 100, 90, 180, 160, 140, 200, 220, 275],
           },
-          tooltip: {
-            shared: false,
+          {
+            name: `${lineObjects[itemLabel++]}`,
+            data: [20, 40, 30, 70, 40, 60, 50, 140, 120, 100, 140, 180, 220],
           },
-          yaxis: {
-            opposite: isRtl,
-          },
-        };
+        ],
+        xaxis: {
+          categories: [
+            "7/12",
+            "8/12",
+            "9/12",
+            "10/12",
+            "11/12",
+            "12/12",
+            "13/12",
+            "14/12",
+            "15/12",
+            "16/12",
+            "17/12",
+            "18/12",
+            "19/12",
+          ],
+        },
+        fill: {
+          opacity: 1,
+          type: "solid",
+        },
+        tooltip: {
+          shared: false,
+        },
+        yaxis: {
+          opposite: isRtl,
+        },
+      };
     if (typeof areaChartEl !== undefined && areaChartEl !== null) {
       var areaChart = new ApexCharts(areaChartEl, areaChartConfig);
       areaChart.render();
     }
+  }
 
- }
+  
 
+  // revenue
 
+  function revenueFunc(data) {
+    // save data in local storage
+    localStorage.setItem("revenueData", JSON.stringify(data));
 
+    getLineAreaChartData(data.revenue, "#revenue_chart");
+    $(".loading-item").removeClass("d-flex").hide();
+  }
 
+  function fetchRevenueData() {
+    fetch("https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/revenue")
+      .then((response) => response.json())
+      .then((data) => {
+        revenueFunc(data);
+        console.log("revenue from inside fetch");
+      })
+      .catch((error) => console.log(error));
+  }
+
+  localStorage.getItem("revenueData") == "" ||
+  localStorage.getItem("revenueData") == undefined ||
+  localStorage.getItem("revenueData") == null
+    ? fetchRevenueData()
+    : getData("revenueData");
+
+  // liquidity
+  function liquidityFunc(data) {
+    // save data in local storage
+    localStorage.setItem("liquidityData", JSON.stringify(data));
+    getLineAreaChartData(data.liquidity, "#liquidity_chart");
+    $(".loading-item").removeClass("d-flex").hide();
+  }
+
+  function fetchLiquidityData() {
+    fetch(
+      "https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/liquidity"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        liquidityFunc(data);
+        console.log("liquidity from inside fetch");
+      })
+      .catch((error) => console.log(error));
+  }
+
+  localStorage.getItem("liquidityData") == "" ||
+  localStorage.getItem("liquidityData") == undefined ||
+  localStorage.getItem("liquidityData") == null
+    ? fetchLiquidityData()
+    : getData("liquidityData");
+
+  // price
+  function priceFunc(data) {
+    // save data in local storage
+    localStorage.setItem("priceData", JSON.stringify(data));
+    getLineChartData(data.price, "#price_chart");
+    $(".loading-item").removeClass("d-flex").hide();
+  }
+
+  function fetchPriceData() {
+    fetch("https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/price")
+      .then((response) => response.json())
+      .then((data) => {
+        priceFunc(data);
+        console.log("price from inside fetch");
+      })
+      .catch((error) => console.log(error));
+  }
+
+  localStorage.getItem("priceData") == "" ||
+  localStorage.getItem("priceData") == undefined ||
+  localStorage.getItem("priceData") == null
+    ? fetchPriceData()
+    : getData("priceData");
 
 
 
   // News
-  fetch(
-    "https://api.sheety.co/946e32d96cfc19bc43da734b36b22829/superScreenerApi/news"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      //  console.log(data);
-      getNewsData(data.news, "#news_cards");
-      $(".loading-item").removeClass("d-flex").hide();
-    })
-    .catch((error) => console.log(error));
+  function newsFunc(data) {
+    // save data in local storage
+    localStorage.setItem("newsData", JSON.stringify(data));
+    getNewsData(data.news, "#news_cards");
+    $(".loading-item").removeClass("d-flex").hide();
+  }
 
-
-  // revenue 
-   fetch(
-     "https://api.sheety.co/946e32d96cfc19bc43da734b36b22829/superScreenerApi/revenue"
-   )
-     .then((response) => response.json())
-     .then((data) => {
-       // console.log(data);
-       getLineAreaChartData(data.revenue, "#revenue_chart");
-       $(".loading-item").removeClass("d-flex").hide();
-     })
-     .catch((error) => console.log(error));
-
-    // liquidity
-    fetch(
-      "https://api.sheety.co/946e32d96cfc19bc43da734b36b22829/superScreenerApi/liquidity"
-    )
+  function fetchNewsData() {
+    fetch("https://api.sheety.co/27ac9c070347fb610f4bf47546824333/fss/news")
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
-        getLineAreaChartData(data.liquidity, "#liquidity_chart");
-        $(".loading-item").removeClass("d-flex").hide();
+        newsFunc(data);
+        console.log(data);
+        console.log("news from inside fetch");
       })
       .catch((error) => console.log(error));
+  }
+
+  localStorage.getItem("newsData") == "" ||
+  localStorage.getItem("newsData") == undefined ||
+  localStorage.getItem("newsData") == null
+    ? fetchNewsData()
+    : getData("newsData");
 
 
 
-    // price
-    fetch(
-      "https://api.sheety.co/946e32d96cfc19bc43da734b36b22829/superScreenerApi/price"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        getLineChartData(data.price, "#price_chart");
-        $(".loading-item").removeClass("d-flex").hide();
-      })
-      .catch((error) => console.log(error));
-
-
-
-        
-
+    // get data 
+    function getData(obj) {
+      console.log(obj + " from inside localStorage");
+      var retivedData = JSON.parse(localStorage.getItem(obj));
+      if (obj == "newsData") {
+        newsFunc(retivedData);
+      } else if (obj == "revenueData") {
+        revenueFunc(retivedData);
+      } else if (obj == "liquidityData") {
+        liquidityFunc(retivedData);
+      } else if (obj == "priceData") {
+        priceFunc(retivedData);
+      }
+    }
+    
 });
         
         

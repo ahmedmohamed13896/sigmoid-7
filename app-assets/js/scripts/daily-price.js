@@ -405,6 +405,14 @@ $(window).on('load', function() {
                 localStorage.getItem("dailyLosersData") == null
                   ? fetchDailyLosersData()
                   : getData("dailyLosersData");
-        })
+
+
+        });
+        
+    
+
+       
+      
         
         
+       
