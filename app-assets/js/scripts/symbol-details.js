@@ -328,7 +328,7 @@ $(window).on('load', function() {
 
   function revenueFunc(data) {
     // save data in local storage
-    localStorage.setItem("revenueData", JSON.stringify(data));
+    sessionStorage.setItem("revenueData", JSON.stringify(data));
 
     getLineAreaChartData(data.revenue, "#revenue_chart");
     $(".loading-item").removeClass("d-flex").hide();
@@ -344,16 +344,16 @@ $(window).on('load', function() {
       .catch((error) => console.log(error));
   }
 
-  localStorage.getItem("revenueData") == "" ||
-  localStorage.getItem("revenueData") == undefined ||
-  localStorage.getItem("revenueData") == null
+  sessionStorage.getItem("revenueData") == "" ||
+  sessionStorage.getItem("revenueData") == undefined ||
+  sessionStorage.getItem("revenueData") == null
     ? fetchRevenueData()
     : getData("revenueData");
 
   // liquidity
   function liquidityFunc(data) {
     // save data in local storage
-    localStorage.setItem("liquidityData", JSON.stringify(data));
+    sessionStorage.setItem("liquidityData", JSON.stringify(data));
     getLineAreaChartData(data.liquidity, "#liquidity_chart");
     $(".loading-item").removeClass("d-flex").hide();
   }
@@ -370,16 +370,16 @@ $(window).on('load', function() {
       .catch((error) => console.log(error));
   }
 
-  localStorage.getItem("liquidityData") == "" ||
-  localStorage.getItem("liquidityData") == undefined ||
-  localStorage.getItem("liquidityData") == null
+  sessionStorage.getItem("liquidityData") == "" ||
+  sessionStorage.getItem("liquidityData") == undefined ||
+  sessionStorage.getItem("liquidityData") == null
     ? fetchLiquidityData()
     : getData("liquidityData");
 
   // price
   function priceFunc(data) {
     // save data in local storage
-    localStorage.setItem("priceData", JSON.stringify(data));
+    sessionStorage.setItem("priceData", JSON.stringify(data));
     getLineChartData(data.price, "#price_chart");
     $(".loading-item").removeClass("d-flex").hide();
   }
@@ -394,9 +394,9 @@ $(window).on('load', function() {
       .catch((error) => console.log(error));
   }
 
-  localStorage.getItem("priceData") == "" ||
-  localStorage.getItem("priceData") == undefined ||
-  localStorage.getItem("priceData") == null
+  sessionStorage.getItem("priceData") == "" ||
+  sessionStorage.getItem("priceData") == undefined ||
+  sessionStorage.getItem("priceData") == null
     ? fetchPriceData()
     : getData("priceData");
 
@@ -405,7 +405,7 @@ $(window).on('load', function() {
   // News
   function newsFunc(data) {
     // save data in local storage
-    localStorage.setItem("newsData", JSON.stringify(data));
+    sessionStorage.setItem("newsData", JSON.stringify(data));
     getNewsData(data.news, "#news_cards");
     $(".loading-item").removeClass("d-flex").hide();
   }
@@ -421,10 +421,10 @@ $(window).on('load', function() {
       .catch((error) => console.log(error));
   }
 
-  localStorage.getItem("newsData") == "" ||
-  localStorage.getItem("newsData") == undefined ||
-  localStorage.getItem("newsData") == null ||
-  localStorage.getItem("newsData") == []
+  sessionStorage.getItem("newsData") == "" ||
+  sessionStorage.getItem("newsData") == undefined ||
+  sessionStorage.getItem("newsData") == null ||
+  sessionStorage.getItem("newsData") == []
     ? fetchNewsData()
     : getData("newsData");
 
@@ -432,8 +432,8 @@ $(window).on('load', function() {
 
     // get data 
     function getData(obj) {
-      console.log(obj + " from inside localStorage");
-      var retivedData = JSON.parse(localStorage.getItem(obj));
+      console.log(obj + " from inside sessionStorage");
+      var retivedData = JSON.parse(sessionStorage.getItem(obj));
       if (obj == "newsData") {
         newsFunc(retivedData);
       } else if (obj == "revenueData") {

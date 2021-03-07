@@ -297,7 +297,7 @@ $(window).on('load', function() {
 
             function shortInterestFunc (data){
               // save data in local storage
-              localStorage.setItem("shortInterestData", JSON.stringify(data));
+              sessionStorage.setItem("shortInterestData", JSON.stringify(data));
               // Create Table from Json
               var status = "winner";
               $(".loading-item").removeClass("d-flex").hide();
@@ -333,14 +333,14 @@ $(window).on('load', function() {
                 });
             }
             function getData(obj) {
-              console.log(obj + " from inside localStorage");
-              var retivedData = JSON.parse(localStorage.getItem(obj));
+              console.log(obj + " from inside sessionStorage");
+              var retivedData = JSON.parse(sessionStorage.getItem(obj));
                 shortInterestFunc(retivedData);
             }
 
-              localStorage.getItem("shortInterestData") == "" ||
-              localStorage.getItem("shortInterestData") == undefined ||
-              localStorage.getItem("shortInterestData") == null
+              sessionStorage.getItem("shortInterestData") == "" ||
+              sessionStorage.getItem("shortInterestData") == undefined ||
+              sessionStorage.getItem("shortInterestData") == null
                 ? fetchShortInterestData()
                 : getData("shortInterestData");
 

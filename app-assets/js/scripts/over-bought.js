@@ -295,7 +295,7 @@ $(window).on('load', function() {
             // overBought 
             function overBoughtFunc (data){
               // save data in local storage
-              localStorage.setItem("overBoughtData", JSON.stringify(data));
+              sessionStorage.setItem("overBoughtData", JSON.stringify(data));
 
               // Create Table from Json
               var status = "winner";
@@ -340,15 +340,15 @@ $(window).on('load', function() {
 
             
               function getData(obj) {
-                console.log(obj + " from inside localStorage");
-                var retivedData = JSON.parse(localStorage.getItem(obj));
+                console.log(obj + " from inside sessionStorage");
+                var retivedData = JSON.parse(sessionStorage.getItem(obj));
                   overBoughtFunc(retivedData);                
               }
               
 
-               localStorage.getItem("overBoughtData") == "" ||
-               localStorage.getItem("overBoughtData") == undefined ||
-               localStorage.getItem("overBoughtData") == null
+               sessionStorage.getItem("overBoughtData") == "" ||
+               sessionStorage.getItem("overBoughtData") == undefined ||
+               sessionStorage.getItem("overBoughtData") == null
                  ? fetchOverBoughtData()
                  : getData("overBoughtData");        
 

@@ -226,7 +226,7 @@ $(window).on('load', function() {
 
   function usIpOsFunc (data){
     // save data in local storage
-    localStorage.setItem("usIpOsData", JSON.stringify(data));
+    sessionStorage.setItem("usIpOsData", JSON.stringify(data));
 
 
     // Create Table from Json
@@ -260,14 +260,14 @@ $(window).on('load', function() {
       });
   }
   function getData(obj) {
-    console.log(obj + " from inside localStorage");
-    var retivedData = JSON.parse(localStorage.getItem(obj));
+    console.log(obj + " from inside sessionStorage");
+    var retivedData = JSON.parse(sessionStorage.getItem(obj));
       dailyLosersFunc(retivedData);
   }
 
-   localStorage.getItem("usIpOsData") == "" ||
-   localStorage.getItem("usIpOsData") == undefined ||
-   localStorage.getItem("usIpOsData") == null
+   sessionStorage.getItem("usIpOsData") == "" ||
+   sessionStorage.getItem("usIpOsData") == undefined ||
+   sessionStorage.getItem("usIpOsData") == null
      ? fetchUsIpOsData()
      : getData("usIpOsData");
 
